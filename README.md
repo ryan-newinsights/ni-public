@@ -4,68 +4,63 @@ Static landing page for https://newinsights.ai/
 
 ## Deployment to Google VM
 
-### Prerequisites
+### One-Liner Deploy
 
-- Google VM running Ubuntu/Debian
-- Domain `newinsights.ai` pointed to your VM's IP address
-- SSH access to the VM
+Deploy with a single command from your local machine:
 
-### Quick Deploy
+```bash
+gcloud compute ssh ryan@instance-20250908-075435 \
+  --project=codeinsights-test-1 \
+  --zone=us-central1-c \
+  --command="\
+sudo -i -u hi bash -c 'cd /home/hi/ni-public && git fetch --all && git checkout main && git pull --ff-only' && \
+sudo cp /home/hi/ni-public/nginx.conf /etc/nginx/sites-available/newinsights && \
+sudo cp /home/hi/ni-public/index.html /var/www/newinsights/index.html && \
+sudo nginx -t && \
+sudo systemctl reload nginx"
+```
 
-1. SSH into your Google VM:
-   ```bash
-   gcloud compute ssh YOUR_VM_NAME --zone=YOUR_ZONE
-   # or
-   ssh user@YOUR_VM_IP
-   ```
+### First-Time Setup
 
-2. Clone this repository:
-   ```bash
-   git clone https://github.com/ryan-newinsights/ni-public.git
-   cd ni-public
-   ```
+On your first deployment, SSH into the VM and run:
 
-3. Run the deployment script:
-   ```bash
-   sudo ./deploy.sh
-   ```
+```bash
+gcloud compute ssh ryan@instance-20250908-075435 \
+  --project=codeinsights-test-1 \
+  --zone=us-central1-c
+```
 
-The script will:
-- Install nginx and certbot
-- Copy files to `/var/www/newinsights`
-- Obtain SSL certificates from Let's Encrypt
-- Configure nginx
-- Set up automatic certificate renewal
+Then as the `hi` user:
 
-### Manual Deployment
+```bash
+sudo -i -u hi
+cd /home/hi
+git clone https://github.com/ryan-newinsights/ni-public.git
+```
 
-If you prefer to deploy manually:
+Set up the web directory and nginx:
 
-1. Install nginx:
-   ```bash
-   sudo apt update
-   sudo apt install nginx certbot python3-certbot-nginx
-   ```
+```bash
+# Create web root
+sudo mkdir -p /var/www/newinsights
+sudo chown -R www-data:www-data /var/www/newinsights
 
-2. Copy the landing page:
-   ```bash
-   sudo mkdir -p /var/www/newinsights
-   sudo cp index.html /var/www/newinsights/
-   sudo chown -R www-data:www-data /var/www/newinsights
-   ```
+# Copy files
+sudo cp /home/hi/ni-public/index.html /var/www/newinsights/
+sudo cp /home/hi/ni-public/nginx.conf /etc/nginx/sites-available/newinsights
+sudo ln -s /etc/nginx/sites-available/newinsights /etc/nginx/sites-enabled/
 
-3. Get SSL certificate:
-   ```bash
-   sudo certbot certonly --standalone -d newinsights.ai -d www.newinsights.ai
-   ```
+# Test and reload
+sudo nginx -t && sudo systemctl reload nginx
+```
 
-4. Install nginx config:
-   ```bash
-   sudo cp nginx.conf /etc/nginx/sites-available/newinsights
-   sudo ln -s /etc/nginx/sites-available/newinsights /etc/nginx/sites-enabled/
-   sudo rm /etc/nginx/sites-enabled/default  # Remove default site
-   sudo nginx -t && sudo systemctl reload nginx
-   ```
+### SSL Certificates
+
+If SSL is not yet configured, obtain certificates:
+
+```bash
+sudo certbot certonly --nginx -d newinsights.ai -d www.newinsights.ai
+```
 
 ## Architecture
 
