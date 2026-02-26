@@ -65,22 +65,26 @@ sudo certbot certonly --nginx -d newinsights.ai -d www.newinsights.ai
 ## Architecture
 
 ```
-https://newinsights.ai/
-├── /                  → Static landing page (this repo)
-├── /login             → Proxied to Flask app :8000
-├── /login-email       → Proxied to Flask app :8000
-├── /auth/*            → Proxied to Flask app :8000
-└── /static/*          → Proxied to Flask app :8000
+DNS: newinsights.ai -> VM (34.135.140.130)
 
-https://scribe.newinsights.ai/  → Separate scribe app (different config)
+https://newinsights.ai/
+├── /   (exact)        → Static landing page (this repo, served by nginx)
+└── /*  (everything)   → Proxied to Cloud Run (scribe app)
+
+https://scribe.newinsights.ai/  → Cloud Run direct (domain mapping)
 ```
+
+The marketing homepage is completely isolated from scribe deployments:
+- Scribe deploys to Cloud Run with zero-downtime rolling updates
+- The static homepage is served directly by nginx on the VM
+- nginx proxies all app routes to Cloud Run via its `.run.app` URL
 
 ## Files
 
 - `index.html` - Landing page
-- `nginx.conf` - Nginx configuration with SSL and proxy rules
-- `deploy.sh` - Automated deployment script
+- `nginx.conf` - Nginx configuration: static homepage + Cloud Run reverse proxy
+- `deploy.sh` - Automated first-time deployment script
 
 ## Related Repositories
 
-- [scribe](https://github.com/ryan-newinsights/scribe) - Main application (runs on scribe.newinsights.ai)
+- [scribe](https://github.com/ryan-newinsights/scribe) - Main application (Cloud Run)
