@@ -12,7 +12,6 @@
         :root {
             --bg: #FFFFFF;
             --text: #1A1A2E;
-            --accent: #028090;
             --white: #FFFFFF;
             --border: #E2E8E7;
             --font-headline: 'Jost', sans-serif;
@@ -81,14 +80,14 @@
         }
 
         .logo-dot {
-            color: var(--accent);
+            color: var(--text);
         }
 
         .nav-cta {
             font-family: var(--font-body);
             font-weight: 600;
             font-size: 15px;
-            color: var(--accent);
+            color: var(--text);
             text-decoration: none;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -125,7 +124,8 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--text);
+            opacity: 0.5;
             margin-bottom: 16px;
         }
 
@@ -200,7 +200,7 @@
             justify-content: center;
             height: 48px;
             padding: 0 32px;
-            background: var(--accent);
+            background: var(--text);
             color: var(--white);
             font-family: var(--font-body);
             font-weight: 600;
@@ -228,12 +228,12 @@
             display: inline-flex;
             align-items: center;
             padding: 8px 16px;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--border);
             border-radius: 4px;
             font-family: var(--font-body);
             font-weight: 600;
             font-size: 13px;
-            color: var(--accent);
+            color: var(--text);
         }
 
         /* ---- PROBLEM ---- */
@@ -298,21 +298,9 @@
         }
 
         /* ---- SOLUTION ---- */
-        #solution {
-            background: var(--accent);
-            color: var(--white);
-        }
-
-        #solution .section-label {
-            color: rgba(255,255,255,0.7);
-        }
-
-        #solution .section-headline {
-            color: var(--white);
-        }
-
         #solution .solution-body {
-            color: rgba(255,255,255,0.9);
+            color: var(--text);
+            opacity: 0.7;
             font-size: 17px;
             line-height: 1.7;
             max-width: 680px;
@@ -338,7 +326,8 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--text);
+            opacity: 0.5;
             margin-bottom: 8px;
         }
 
@@ -382,8 +371,8 @@
             font-weight: 300;
             font-size: 80px;
             line-height: 1;
-            color: var(--accent);
-            opacity: 0.15;
+            color: var(--text);
+            opacity: 0.1;
         }
 
         .step h3 {
@@ -420,7 +409,8 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--text);
+            opacity: 0.5;
             margin-bottom: 8px;
         }
 
@@ -466,9 +456,6 @@
         }
 
         /* ---- FOOTER CTA ---- */
-        #cta {
-            background: #EEF9FA;
-        }
 
         #cta .container {
             text-align: center;
@@ -504,7 +491,7 @@
         }
 
         .cta-form input[type="email"]:focus {
-            border-color: var(--accent);
+            border-color: var(--text);
         }
 
         .consent-row {
@@ -516,7 +503,7 @@
 
         .consent-row input[type="checkbox"] {
             margin-top: 3px;
-            accent-color: var(--accent);
+            accent-color: var(--text);
             flex-shrink: 0;
         }
 
@@ -529,8 +516,8 @@
         }
 
         .consent-row label a {
-            color: var(--accent);
-            text-decoration: none;
+            color: var(--text);
+            text-decoration: underline;
         }
 
         .consent-row label a:hover {
@@ -554,7 +541,7 @@
             width: 100%;
             height: 48px;
             margin-top: 16px;
-            background: var(--accent);
+            background: var(--text);
             color: var(--white);
             font-family: var(--font-body);
             font-weight: 600;
@@ -580,7 +567,7 @@
             font-family: var(--font-body);
             font-weight: 600;
             font-size: 17px;
-            color: var(--accent);
+            color: var(--text);
             text-align: center;
         }
 
@@ -737,9 +724,9 @@
                     <div>
                         <div class="col-icon">
                             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 6L36 34H4L20 6Z" stroke="#028090" stroke-width="2" stroke-linejoin="round" fill="none"/>
-                                <line x1="20" y1="16" x2="20" y2="24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
-                                <circle cx="20" cy="28" r="1.5" fill="#028090"/>
+                                <path d="M20 6L36 34H4L20 6Z" stroke="#1A1A2E" stroke-width="2" stroke-linejoin="round" fill="none"/>
+                                <line x1="20" y1="16" x2="20" y2="24" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="20" cy="28" r="1.5" fill="#1A1A2E"/>
                             </svg>
                         </div>
                         <h3>Compliance teams can't verify the code</h3>
@@ -748,11 +735,11 @@
                     <div>
                         <div class="col-icon">
                             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="4" y="8" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
-                                <rect x="24" y="8" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
-                                <rect x="14" y="24" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
-                                <path d="M10 18L20 24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M30 18L20 24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
+                                <rect x="4" y="8" width="12" height="10" rx="2" stroke="#1A1A2E" stroke-width="2" fill="none"/>
+                                <rect x="24" y="8" width="12" height="10" rx="2" stroke="#1A1A2E" stroke-width="2" fill="none"/>
+                                <rect x="14" y="24" width="12" height="10" rx="2" stroke="#1A1A2E" stroke-width="2" fill="none"/>
+                                <path d="M10 18L20 24" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M30 18L20 24" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </div>
                         <h3>Migration projects stall</h3>
@@ -761,8 +748,8 @@
                     <div>
                         <div class="col-icon">
                             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="20" cy="14" r="6" stroke="#028090" stroke-width="2" fill="none"/>
-                                <path d="M8 34C8 27.4 13.4 22 20 22C26.6 22 32 27.4 32 34" stroke="#028090" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                <circle cx="20" cy="14" r="6" stroke="#1A1A2E" stroke-width="2" fill="none"/>
+                                <path d="M8 34C8 27.4 13.4 22 20 22C26.6 22 32 27.4 32 34" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
                             </svg>
                         </div>
                         <h3>Onboarding costs compound</h3>
