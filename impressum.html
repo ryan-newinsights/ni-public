@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum — NewInsights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F8F8F5;
+            --text: #1A1A2E;
+            --accent: #028090;
+            --secondary: #4A5568;
+            --white: #FFFFFF;
+            --border: #E2E8E7;
+            --font-headline: 'Jost', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+
+        .nav-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 22px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-dot { color: var(--accent); }
+
+        .nav-cta {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .nav-cta:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .page-content {
+            padding-top: 80px;
+            padding-bottom: 96px;
+        }
+
+        .page-headline {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 40px;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .page-sublabel {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-bottom: 48px;
+        }
+
+        .info-group {
+            margin-bottom: 24px;
+        }
+
+        .info-group .info-label {
+            font-size: 14px;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .info-group .info-value {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .info-group .info-value a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .info-group .info-value a:hover {
+            text-decoration: underline;
+        }
+
+        .note-block {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .note-block p {
+            margin-bottom: 12px;
+        }
+
+        .note-block .english-note {
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        .footer-row { margin-bottom: 8px; }
+        .footer-row:last-child { margin-bottom: 0; }
+
+        .footer-inner a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .footer-inner a:hover { text-decoration: underline; }
+
+        .footer-sep { margin: 0 4px; }
+
+        @media (max-width: 768px) {
+            .page-headline { font-size: 32px; }
+            .page-content { padding-top: 48px; padding-bottom: 64px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo">NewInsights<span class="logo-dot">.</span></a>
+            <a href="index.html#cta" class="nav-cta">Request Access</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <div class="container">
+            <h1 class="page-headline">Impressum</h1>
+            <p class="page-sublabel">Angaben gem&auml;&szlig; &sect; 5 TMG</p>
+
+            <div class="info-group">
+                <p class="info-label">Verantwortlich</p>
+                <div class="info-value">
+                    Ryan Paul Grenier<br>
+                    Berliner Allee 8<br>
+                    63739 Aschaffenburg<br>
+                    Deutschland
+                </div>
+            </div>
+
+            <div class="info-group">
+                <p class="info-label">Kontakt</p>
+                <div class="info-value">
+                    E-Mail: <a href="mailto:info@newinsights.ai">info@newinsights.ai</a>
+                </div>
+            </div>
+
+            <div class="note-block">
+                <p>Diese Website wird betrieben von einer nat&uuml;rlichen Person. Eine eingetragene Gesellschaft besteht zum gegenw&auml;rtigen Zeitpunkt nicht.</p>
+                <p class="english-note">This website is operated by an individual. No registered legal entity exists at this time.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-row">&copy; 2025 NewInsights. All rights reserved.</div>
+            <div class="footer-row">
+                <a href="https://newinsights.ai">newinsights.ai</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="impressum.html">Impressum</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -3,41 +3,877 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>newinsights.ai</title>
+    <title>NewInsights — Codebase Documentation, Automated</title>
+    <meta name="description" content="NewInsights transforms legacy and modern codebases into structured, audit-ready documentation — automatically.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * {
+        :root {
+            --bg: #F8F8F5;
+            --text: #1A1A2E;
+            --accent: #028090;
+            --secondary: #4A5568;
+            --code-surface: #EEF4F3;
+            --white: #FFFFFF;
+            --border: #E2E8E7;
+            --font-headline: 'Jost', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
-            height: 100%;
-            background: #ffffff;
+
+        html {
+            scroll-behavior: smooth;
         }
+
         body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s ease;
+            padding: 20px 0;
+        }
+
+        nav.scrolled {
+            padding: 12px 0;
+        }
+
+        .nav-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 22px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-dot {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            text-decoration: underline;
+        }
+
+        /* ---- LAYOUT ---- */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 96px 0;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0;
+        }
+
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .section-headline {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 36px;
+            line-height: 1.25;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+
+        /* ---- FADE-IN ---- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- HERO ---- */
+        #hero {
+            padding-top: 160px;
+            padding-bottom: 96px;
+            text-align: center;
+        }
+
+        .hero-headline {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 56px;
+            line-height: 1.15;
+            color: var(--text);
+            max-width: 780px;
+            margin: 0 auto 24px;
+        }
+
+        .hero-sub {
+            font-family: var(--font-body);
+            font-size: 20px;
+            line-height: 1.6;
+            color: var(--secondary);
+            max-width: 640px;
+            margin: 0 auto 40px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            font-family: 'Jost', sans-serif;
-            font-weight: 300;
+            height: 48px;
+            padding: 0 32px;
+            background: var(--accent);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s;
         }
-        h1 {
-            font-size: 70px;
-            font-weight: 300;
-            color: #000000;
-            letter-spacing: -0.02em;
+
+        .btn-primary:hover {
+            opacity: 0.9;
         }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 40px;
+
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--accent);
+        }
+
+        /* ---- PROBLEM ---- */
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 48px;
+        }
+
+        .three-col .col-icon {
+            margin-bottom: 16px;
+        }
+
+        .three-col .col-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .three-col h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .three-col p {
+            color: var(--secondary);
+            font-size: 16px;
+        }
+
+        /* ---- SOLUTION ---- */
+        #solution {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        #solution .section-label {
+            color: rgba(255,255,255,0.7);
+        }
+
+        #solution .section-headline {
+            color: var(--white);
+        }
+
+        #solution .solution-body {
+            color: rgba(255,255,255,0.9);
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 680px;
+            margin-bottom: 48px;
+        }
+
+        .output-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .output-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .output-card .card-label {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .output-card .card-title {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .output-card .card-desc {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--secondary);
+            line-height: 1.5;
+        }
+
+        /* ---- HOW IT WORKS ---- */
+        .steps {
+            margin-top: 48px;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 100px;
+            min-height: 100px;
+            margin-bottom: 56px;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: -8px;
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 80px;
+            line-height: 1;
+            color: var(--accent);
+            opacity: 0.15;
+        }
+
+        .step h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: var(--secondary);
+            font-size: 17px;
+        }
+
+        /* ---- AUDIENCE ---- */
+        .persona-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .persona-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .persona-card .role-label {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .persona-card .persona-name {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .persona-card .persona-pain {
+            color: var(--secondary);
+            font-size: 15px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .persona-card .persona-value {
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ---- SECTOR ---- */
+        #sector {
+            text-align: center;
+        }
+
+        #sector .container {
+            max-width: 600px;
+        }
+
+        #sector .section-headline {
+            font-size: 28px;
+        }
+
+        #sector p {
+            color: var(--secondary);
+            line-height: 1.7;
+        }
+
+        /* ---- FOOTER CTA ---- */
+        #cta {
+            background: #EEF9FA;
+        }
+
+        #cta .container {
+            text-align: center;
+        }
+
+        #cta .section-headline {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        #cta .cta-body {
+            color: var(--secondary);
+            margin-bottom: 32px;
+        }
+
+        .cta-form {
+            max-width: 480px;
+            margin: 0 auto 16px;
+            text-align: left;
+        }
+
+        .cta-form input[type="email"] {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            background: var(--white);
+            outline: none;
+        }
+
+        .cta-form input[type="email"]:focus {
+            border-color: var(--accent);
+        }
+
+        .consent-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .consent-row input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .consent-row label {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--secondary);
+            line-height: 1.5;
+        }
+
+        .consent-row label a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .consent-row label a:hover {
+            text-decoration: underline;
+        }
+
+        .consent-error {
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: #DC2626;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .consent-error.show {
+            display: block;
+        }
+
+        .cta-form .btn-submit {
+            display: block;
+            width: 100%;
+            height: 48px;
+            margin-top: 16px;
+            background: var(--accent);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .cta-form .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .fine-print {
+            font-size: 12px;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .cta-thanks {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 17px;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        .footer-row {
+            margin-bottom: 8px;
+        }
+
+        .footer-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-inner a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .footer-inner a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-sep {
+            margin: 0 4px;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .hero-headline {
+                font-size: 36px;
+            }
+
+            .hero-sub {
+                font-size: 17px;
+            }
+
+            .section-headline {
+                font-size: 28px;
+            }
+
+            #sector .section-headline {
+                font-size: 24px;
+            }
+
+            #cta .section-headline {
+                font-size: 26px;
+            }
+
+            .three-col {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .output-cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .persona-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .step {
+                padding-left: 72px;
+            }
+
+            .step-number {
+                font-size: 60px;
+            }
+
+            section {
+                padding: 64px 0;
+            }
+
+            #hero {
+                padding-top: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .output-cards {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <h1>newinsights.ai</h1>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">NewInsights<span class="logo-dot">.</span></a>
+            <a href="#cta" class="nav-cta">Request Access</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <section id="hero" class="fade-in">
+            <div class="container">
+                <h1 class="hero-headline">Your codebase is your most valuable knowledge asset.<br>Most enterprises can't read it.</h1>
+                <p class="hero-sub">NewInsights transforms legacy and modern codebases into structured, audit-ready documentation — automatically.</p>
+                <a href="#cta" class="btn-primary">Request Early Access</a>
+                <div class="pills">
+                    <span class="pill">Python</span>
+                    <span class="pill">Java</span>
+                    <span class="pill">JavaScript</span>
+                    <span class="pill">TypeScript</span>
+                    <span class="pill">Go</span>
+                    <span class="pill">Ruby</span>
+                    <span class="pill">SQL</span>
+                    <span class="pill">C#</span>
+                    <span class="pill">C/C++</span>
+                    <span class="pill">Kotlin</span>
+                    <span class="pill">Rust</span>
+                    <span class="pill">COBOL</span>
+                    <span class="pill">PHP</span>
+                    <span class="pill">Swift</span>
+                    <span class="pill">Bash</span>
+                    <span class="pill">Scala</span>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- THE PROBLEM -->
+        <section id="problem" class="fade-in">
+            <div class="container">
+                <p class="section-label">The Knowledge Gap</p>
+                <h2 class="section-headline">Legacy IT is the knowledge base of the enterprise.<br>Nobody can read it.</h2>
+                <div class="three-col">
+                    <div>
+                        <div class="col-icon">
+                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L36 34H4L20 6Z" stroke="#028090" stroke-width="2" stroke-linejoin="round" fill="none"/>
+                                <line x1="20" y1="16" x2="20" y2="24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="20" cy="28" r="1.5" fill="#028090"/>
+                            </svg>
+                        </div>
+                        <h3>Compliance teams can't verify the code</h3>
+                        <p>Regulators increasingly require IT systems to be documented to auditable standards. But the documentation rarely reflects what the code actually does.</p>
+                    </div>
+                    <div>
+                        <div class="col-icon">
+                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="8" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
+                                <rect x="24" y="8" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
+                                <rect x="14" y="24" width="12" height="10" rx="2" stroke="#028090" stroke-width="2" fill="none"/>
+                                <path d="M10 18L20 24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M30 18L20 24" stroke="#028090" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Migration projects stall</h3>
+                        <p>Before you can modernise legacy infrastructure, you need to understand it. Dependency maps that take months to produce manually block every transformation programme.</p>
+                    </div>
+                    <div>
+                        <div class="col-icon">
+                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="14" r="6" stroke="#028090" stroke-width="2" fill="none"/>
+                                <path d="M8 34C8 27.4 13.4 22 20 22C26.6 22 32 27.4 32 34" stroke="#028090" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3>Onboarding costs compound</h3>
+                        <p>Engineers spend months learning systems that should be documented from day one. Every departure takes institutional knowledge with it.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE SOLUTION -->
+        <section id="solution" class="fade-in">
+            <div class="container">
+                <p class="section-label">The Platform</p>
+                <h2 class="section-headline">Make the codebase the knowledge base.</h2>
+                <p class="solution-body">NewInsights connects to your repository and uses a multi-agent AI pipeline to analyse, document, and verify every component in your codebase. The result is structured documentation your compliance team can trust and your engineers can actually use.</p>
+                <div class="output-cards">
+                    <div class="output-card">
+                        <p class="card-label">Inline Docs</p>
+                        <p class="card-title">Docstrings</p>
+                        <p class="card-desc">Context-aware documentation for every function, class, and method.</p>
+                    </div>
+                    <div class="output-card">
+                        <p class="card-label">Stakeholder Docs</p>
+                        <p class="card-title">Business Overview</p>
+                        <p class="card-desc">Executive summaries written from code, not from memory.</p>
+                    </div>
+                    <div class="output-card">
+                        <p class="card-label">Architecture Docs</p>
+                        <p class="card-title">Technical Deep Dive</p>
+                        <p class="card-desc">Data flow, component responsibilities, and integration points.</p>
+                    </div>
+                    <div class="output-card">
+                        <p class="card-label">Visual Docs</p>
+                        <p class="card-title">System Diagrams</p>
+                        <p class="card-desc">Auto-generated Mermaid class, sequence, and dependency diagrams.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- HOW IT WORKS -->
+        <section id="how-it-works" class="fade-in">
+            <div class="container">
+                <p class="section-label">The Process</p>
+                <h2 class="section-headline">Three steps from repository to documentation.</h2>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <h3>Analyse</h3>
+                        <p>NewInsights parses your codebase using a production-grade syntax parser to build a precise dependency map. Every class, function, and module relationship is resolved before any AI processing begins.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <h3>Generate</h3>
+                        <p>A coordinated team of AI agents works through your codebase in dependency order. The Reader understands context. The Searcher finds relevant references. The Writer produces documentation to your standards.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <h3>Verify</h3>
+                        <p>A dedicated Verifier agent reviews every output against quality criteria before it is accepted. Outputs that don't meet the standard are rejected and rewritten — automatically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- WHO IT'S FOR -->
+        <section id="audience" class="fade-in">
+            <div class="container">
+                <p class="section-label">Target Audience</p>
+                <h2 class="section-headline">Built for regulated industries.</h2>
+                <div class="persona-cards">
+                    <div class="persona-card">
+                        <p class="role-label">Compliance &amp; Audit</p>
+                        <p class="persona-name">Compliance Officer</p>
+                        <p class="persona-pain">Regulation requires IT systems to be documented to auditable standards — but the documentation you have can't be trusted.</p>
+                        <p class="persona-value">NewInsights produces structured documentation tied directly to what the code actually does.</p>
+                    </div>
+                    <div class="persona-card">
+                        <p class="role-label">Engineering</p>
+                        <p class="persona-name">Engineering Lead</p>
+                        <p class="persona-pain">Your team spends more time understanding the system than building on it — especially in legacy environments.</p>
+                        <p class="persona-value">NewInsights gives every engineer an accurate map of the codebase from day one.</p>
+                    </div>
+                    <div class="persona-card">
+                        <p class="role-label">Technology Leadership</p>
+                        <p class="persona-name">CTO / CIO</p>
+                        <p class="persona-pain">Legacy transformation programmes stall because nobody can produce a reliable picture of the current architecture.</p>
+                        <p class="persona-value">NewInsights delivers the IT landscape view and dependency analysis that makes transformation tractable.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- SECTOR SIGNAL -->
+        <section id="sector" class="fade-in">
+            <div class="container">
+                <p class="section-label">Regulatory Context</p>
+                <h2 class="section-headline">Designed for BaFin, ECB, and Solvency II environments.</h2>
+                <p>NewInsights output is structured for audit submission — consistent headers, traceable to source, exportable as markdown. Banking, insurance, and asset management teams use NewInsights to close the documentation gap that regulators are increasingly requiring them to address.</p>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- FOOTER CTA -->
+        <section id="cta" class="fade-in">
+            <div class="container">
+                <h2 class="section-headline">Ready to close the knowledge gap?</h2>
+                <p class="cta-body">We're working with a small group of early customers in regulated financial services. If that's you, let's talk.</p>
+                <form class="cta-form" id="cta-form" novalidate>
+                    <input type="email" placeholder="Your work email address" required aria-label="Email address">
+                    <div class="consent-row">
+                        <input type="checkbox" id="consent" required>
+                        <label for="consent">I agree to be contacted by NewInsights about early access. See our <a href="privacy.html">Privacy Policy</a>.</label>
+                    </div>
+                    <p class="consent-error" id="consent-error">Please confirm you agree to be contacted.</p>
+                    <button type="submit" class="btn-submit">Request Access</button>
+                </form>
+                <p class="fine-print">No commitment. We'll be in touch within 48 hours.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-row">&copy; 2025 NewInsights. All rights reserved.</div>
+            <div class="footer-row">
+                <a href="https://newinsights.ai">newinsights.ai</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="impressum.html">Impressum</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky nav: reduce padding on scroll
+        var nav = document.getElementById('nav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 80) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }, { passive: true });
+
+        // Email capture with consent validation
+        document.getElementById('cta-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var checkbox = document.getElementById('consent');
+            var error = document.getElementById('consent-error');
+            if (!checkbox.checked) {
+                error.classList.add('show');
+                return;
+            }
+            error.classList.remove('show');
+            this.outerHTML = '<p class="cta-thanks">Thanks — we\'ll be in touch within 48 hours.</p>';
+        });
+
+        // Hide consent error when checkbox is checked
+        document.getElementById('consent').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('consent-error').classList.remove('show');
+            }
+        });
+
+        // Fade-in on scroll with IntersectionObserver
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    </script>
+
 </body>
 </html>

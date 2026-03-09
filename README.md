@@ -16,6 +16,8 @@ gcloud compute ssh ryan@instance-20250908-075435 \
 sudo -i -u hi bash -c 'cd /home/hi/ni-public && git fetch --all && git checkout main && git pull --ff-only' && \
 sudo cp /home/hi/ni-public/nginx.conf /etc/nginx/sites-available/newinsights && \
 sudo cp /home/hi/ni-public/index.html /var/www/newinsights/index.html && \
+sudo cp /home/hi/ni-public/impressum.html /var/www/newinsights/impressum.html && \
+sudo cp /home/hi/ni-public/privacy.html /var/www/newinsights/privacy.html && \
 sudo nginx -t && \
 sudo systemctl reload nginx"
 ```
@@ -46,7 +48,7 @@ sudo mkdir -p /var/www/newinsights
 sudo chown -R www-data:www-data /var/www/newinsights
 
 # Copy files
-sudo cp /home/hi/ni-public/index.html /var/www/newinsights/
+sudo cp /home/hi/ni-public/*.html /var/www/newinsights/
 sudo cp /home/hi/ni-public/nginx.conf /etc/nginx/sites-available/newinsights
 sudo ln -s /etc/nginx/sites-available/newinsights /etc/nginx/sites-enabled/
 
@@ -81,7 +83,9 @@ The marketing homepage is completely isolated from scribe deployments:
 
 ## Files
 
-- `index.html` - Landing page
+- `index.html` - Marketing landing page
+- `impressum.html` - Impressum (legal notice)
+- `privacy.html` - Privacy Policy (GDPR)
 - `nginx.conf` - Nginx configuration: static homepage + Cloud Run reverse proxy
 - `deploy.sh` - Automated first-time deployment script
 
