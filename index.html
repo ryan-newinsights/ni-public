@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewInsights — Codebase Documentation, Automated</title>
-    <meta name="description" content="NewInsights transforms legacy and modern codebases into structured, audit-ready documentation — automatically.">
+    <title>newinsights — Codebase Documentation, Automated</title>
+    <meta name="description" content="newinsights transforms legacy and modern codebases into structured, audit-ready documentation — automatically.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
 
         html {
             scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
         }
 
         body {
@@ -112,16 +113,15 @@
             display: flex;
             align-items: center;
             padding: 96px 0;
+            scroll-snap-align: start;
         }
 
         section > .container {
             width: 100%;
         }
 
-        .section-divider {
-            border: none;
+        .section-border {
             border-top: 1px solid var(--border);
-            margin: 0;
         }
 
         .section-label {
@@ -175,31 +175,19 @@
         }
 
         /* ---- INTRO ---- */
-        #intro {
-            text-align: center;
-        }
-
         .intro-headline {
             font-family: var(--font-headline);
             font-weight: 300;
             font-size: 42px;
             line-height: 1.3;
             color: var(--text);
-            max-width: 700px;
-            margin: 0 auto 24px;
+            text-align: center;
+            max-width: 780px;
+            margin: 0 auto 48px;
         }
 
-        .intro-block {
-            font-family: var(--font-headline);
-            font-weight: 300;
-            font-size: 42px;
-            line-height: 1.3;
-            color: var(--text);
-            display: inline-block;
-            padding: 12px 24px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            margin-bottom: 40px;
+        .intro-headline em {
+            font-style: italic;
         }
 
         .btn-outline {
@@ -224,46 +212,9 @@
             border-color: var(--text);
         }
 
-        .lang-list {
-            margin-top: 40px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            color: var(--text);
-            opacity: 0.4;
-            line-height: 1.8;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* ---- PROBLEM ---- */
-        .problem-headline {
-            font-family: var(--font-headline);
-            font-weight: 300;
-            font-size: 36px;
-            line-height: 1.25;
-            color: var(--text);
+        .section-cta {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .problem-block {
-            font-family: var(--font-headline);
-            font-weight: 300;
-            font-size: 36px;
-            line-height: 1.25;
-            color: var(--text);
-            text-align: center;
-            display: inline-block;
-            margin: 0 auto 48px;
-            padding: 12px 24px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            width: auto;
-        }
-
-        #problem .container {
-            text-align: center;
+            margin-top: 48px;
         }
 
         .three-col {
@@ -618,10 +569,6 @@
                 font-size: 28px;
             }
 
-            .intro-block {
-                font-size: 28px;
-            }
-
             .section-headline {
                 font-size: 28px;
             }
@@ -661,13 +608,6 @@
                 padding: 64px 0;
             }
 
-            .problem-headline {
-                font-size: 28px;
-            }
-
-            .problem-block {
-                font-size: 28px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -697,21 +637,7 @@
         <!-- INTRO -->
         <section id="intro" class="fade-in">
             <div class="container">
-                <h2 class="intro-headline">your codebase is your most valuable knowledge asset.</h2>
-                <div class="intro-block">most enterprises can't read it.</div>
-                <br>
-                <a href="#cta" class="btn-outline">request access</a>
-                <p class="lang-list">python | java | javascript | typescript | go | ruby | sql | c# | c/c++ | kotlin | rust | cobol | php | swift | bash | scala</p>
-            </div>
-        </section>
-
-        <hr class="section-divider">
-
-        <!-- THE PROBLEM -->
-        <section id="problem" class="fade-in">
-            <div class="container">
-                <h2 class="problem-headline">legacy IT is the knowledge base of the enterprise.</h2>
-                <div class="problem-block">nobody can read it.</div>
+                <h2 class="intro-headline">code is the knowledge base of the enterprise. <em>[nobody can read it]</em></h2>
                 <div class="three-col">
                     <div>
                         <div class="col-icon">
@@ -721,7 +647,7 @@
                                 <circle cx="20" cy="28" r="1.5" fill="#1A1A2E"/>
                             </svg>
                         </div>
-                        <h3>Compliance teams can't verify the code</h3>
+                        <h3>audit doesn't verify the code</h3>
                         <p>Regulators increasingly require IT systems to be documented to auditable standards. But the documentation rarely reflects what the code actually does.</p>
                     </div>
                     <div>
@@ -734,7 +660,7 @@
                                 <path d="M30 18L20 24" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </div>
-                        <h3>Migration projects stall</h3>
+                        <h3>migration projects stall</h3>
                         <p>Before you can modernise legacy infrastructure, you need to understand it. Dependency maps that take months to produce manually block every transformation programme.</p>
                     </div>
                     <div>
@@ -744,19 +670,22 @@
                                 <path d="M8 34C8 27.4 13.4 22 20 22C26.6 22 32 27.4 32 34" stroke="#1A1A2E" stroke-width="2" stroke-linecap="round" fill="none"/>
                             </svg>
                         </div>
-                        <h3>Onboarding costs compound</h3>
-                        <p>Engineers spend months learning systems that should be documented from day one. Every departure takes institutional knowledge with it.</p>
+                        <h3>costs compound</h3>
+                        <p>Institutional knowledge walks into retirement. New engineers spend months learning systems that should be documented from day one. Every departure widens the gap.</p>
                     </div>
+                </div>
+                <div class="section-cta">
+                    <a href="#cta" class="btn-outline">request access</a>
                 </div>
             </div>
         </section>
 
         <!-- THE SOLUTION -->
-        <section id="solution" class="fade-in">
+        <section id="solution" class="fade-in section-border">
             <div class="container">
                 <p class="section-label">The Platform</p>
                 <h2 class="section-headline">Make the codebase the knowledge base.</h2>
-                <p class="solution-body">NewInsights connects to your repository and uses a multi-agent AI pipeline to analyse, document, and verify every component in your codebase. The result is structured documentation your compliance team can trust and your engineers can actually use.</p>
+                <p class="solution-body">newinsights connects to your repository and uses a multi-agent AI pipeline to analyse, document, and verify every component in your codebase. The result is structured documentation your compliance team can trust and your engineers can actually use.</p>
                 <div class="output-cards">
                     <div class="output-card">
                         <p class="card-label">Inline Docs</p>
@@ -782,10 +711,8 @@
             </div>
         </section>
 
-        <hr class="section-divider">
-
         <!-- HOW IT WORKS -->
-        <section id="how-it-works" class="fade-in">
+        <section id="how-it-works" class="fade-in section-border">
             <div class="container">
                 <p class="section-label">The Process</p>
                 <h2 class="section-headline">Three steps from repository to documentation.</h2>
@@ -793,7 +720,7 @@
                     <div class="step">
                         <span class="step-number">1</span>
                         <h3>Analyse</h3>
-                        <p>NewInsights parses your codebase using a production-grade syntax parser to build a precise dependency map. Every class, function, and module relationship is resolved before any AI processing begins.</p>
+                        <p>newinsights parses your codebase using a production-grade syntax parser to build a precise dependency map. Every class, function, and module relationship is resolved before any AI processing begins.</p>
                     </div>
                     <div class="step">
                         <span class="step-number">2</span>
@@ -809,10 +736,8 @@
             </div>
         </section>
 
-        <hr class="section-divider">
-
         <!-- WHO IT'S FOR -->
-        <section id="audience" class="fade-in">
+        <section id="audience" class="fade-in section-border">
             <div class="container">
                 <p class="section-label">Target Audience</p>
                 <h2 class="section-headline">Built for regulated industries.</h2>
@@ -821,39 +746,35 @@
                         <p class="role-label">Compliance &amp; Audit</p>
                         <p class="persona-name">Compliance Officer</p>
                         <p class="persona-pain">Regulation requires IT systems to be documented to auditable standards — but the documentation you have can't be trusted.</p>
-                        <p class="persona-value">NewInsights produces structured documentation tied directly to what the code actually does.</p>
+                        <p class="persona-value">newinsights produces structured documentation tied directly to what the code actually does.</p>
                     </div>
                     <div class="persona-card">
                         <p class="role-label">Engineering</p>
                         <p class="persona-name">Engineering Lead</p>
                         <p class="persona-pain">Your team spends more time understanding the system than building on it — especially in legacy environments.</p>
-                        <p class="persona-value">NewInsights gives every engineer an accurate map of the codebase from day one.</p>
+                        <p class="persona-value">newinsights gives every engineer an accurate map of the codebase from day one.</p>
                     </div>
                     <div class="persona-card">
                         <p class="role-label">Technology Leadership</p>
                         <p class="persona-name">CTO / CIO</p>
                         <p class="persona-pain">Legacy transformation programmes stall because nobody can produce a reliable picture of the current architecture.</p>
-                        <p class="persona-value">NewInsights delivers the IT landscape view and dependency analysis that makes transformation tractable.</p>
+                        <p class="persona-value">newinsights delivers the IT landscape view and dependency analysis that makes transformation tractable.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <hr class="section-divider">
-
         <!-- SECTOR SIGNAL -->
-        <section id="sector" class="fade-in">
+        <section id="sector" class="fade-in section-border">
             <div class="container">
                 <p class="section-label">Regulatory Context</p>
                 <h2 class="section-headline">Designed for BaFin, ECB, and Solvency II environments.</h2>
-                <p>NewInsights output is structured for audit submission — consistent headers, traceable to source, exportable as markdown. Banking, insurance, and asset management teams use NewInsights to close the documentation gap that regulators are increasingly requiring them to address.</p>
+                <p>newinsights output is structured for audit submission — consistent headers, traceable to source, exportable as markdown. Banking, insurance, and asset management teams use newinsights to close the documentation gap that regulators are increasingly requiring them to address.</p>
             </div>
         </section>
 
-        <hr class="section-divider">
-
         <!-- FOOTER CTA -->
-        <section id="cta" class="fade-in">
+        <section id="cta" class="fade-in section-border">
             <div class="container">
                 <h2 class="section-headline">Ready to close the knowledge gap?</h2>
                 <p class="cta-body">We're working with a small group of early customers in regulated financial services. If that's you, let's talk.</p>
@@ -861,7 +782,7 @@
                     <input type="email" placeholder="Your work email address" required aria-label="Email address">
                     <div class="consent-row">
                         <input type="checkbox" id="consent" required>
-                        <label for="consent">I agree to be contacted by NewInsights about early access. See our <a href="privacy.html">Privacy Policy</a>.</label>
+                        <label for="consent">I agree to be contacted by newinsights about early access. See our <a href="privacy.html">Privacy Policy</a>.</label>
                     </div>
                     <p class="consent-error" id="consent-error">Please confirm you agree to be contacted.</p>
                     <button type="submit" class="btn-submit">request access</button>
@@ -875,7 +796,7 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-inner">
-            <div class="footer-row">&copy; 2025 NewInsights. All rights reserved.</div>
+            <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
             <div class="footer-row">
                 <a href="https://newinsights.ai">newinsights.ai</a>
                 <span class="footer-sep">&middot;</span>
