@@ -46,9 +46,13 @@ apt-get install -y -qq nginx certbot python3-certbot-nginx
 log_info "Setting up web root at $WEB_ROOT..."
 mkdir -p "$WEB_ROOT"
 
-# Step 3: Copy index.html
+# Step 3: Copy website files
 log_info "Copying website files..."
-cp "$SCRIPT_DIR/index.html" "$WEB_ROOT/index.html"
+for f in index.html impressum.html privacy.html favicon.svg; do
+    if [[ -f "$SCRIPT_DIR/$f" ]]; then
+        cp "$SCRIPT_DIR/$f" "$WEB_ROOT/$f"
+    fi
+done
 chown -R www-data:www-data "$WEB_ROOT"
 chmod -R 755 "$WEB_ROOT"
 
@@ -61,9 +65,12 @@ if [[ "$SKIP_SSL" == false ]]; then
         systemctl stop nginx || true
 
         # Get certificate for apex and www
+        # --cert-name ensures a stable directory name under /etc/letsencrypt/live/
+        # so nginx.conf paths stay valid across renewals.
         certbot certonly --standalone \
             -d "$DOMAIN" \
             -d "www.$DOMAIN" \
+            --cert-name "$DOMAIN" \
             --non-interactive \
             --agree-tos \
             --email "admin@$DOMAIN" \
