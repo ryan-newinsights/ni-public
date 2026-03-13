@@ -535,18 +535,8 @@
 
         /* ---- FOOTER CTA ---- */
 
-        #cta {
-            flex-direction: column;
-            justify-content: center;
-        }
-
         #cta .container {
             text-align: center;
-        }
-
-        #cta footer {
-            width: 100%;
-            margin-top: auto;
         }
 
         #cta .section-headline {
@@ -662,7 +652,13 @@
 
         /* ---- FOOTER ---- */
         footer {
-            padding: 40px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 16px 0;
+            background: var(--white);
             border-top: 1px solid var(--border);
         }
 
@@ -976,21 +972,22 @@
                 </form>
                 <p class="fine-print">No commitment. We'll be in touch within 48 hours.</p>
             </div>
-            <footer>
-                <div class="footer-inner">
-                    <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
-                    <div class="footer-row">
-                        <a href="https://newinsights.ai">newinsights.ai</a>
-                        <span class="footer-sep">&middot;</span>
-                        <a href="impressum.html">Impressum</a>
-                        <span class="footer-sep">&middot;</span>
-                        <a href="privacy.html">Privacy Policy</a>
-                    </div>
-                </div>
-            </footer>
         </section>
 
     </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
+            <div class="footer-row">
+                <a href="https://newinsights.ai">newinsights.ai</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="impressum.html">Impressum</a>
+                <span class="footer-sep">&middot;</span>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Sticky nav: show on scroll, transparent at top
