@@ -31,7 +31,7 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y proximity;
+            scroll-snap-type: y mandatory;
         }
 
         body {
@@ -535,8 +535,18 @@
 
         /* ---- FOOTER CTA ---- */
 
+        #cta {
+            flex-direction: column;
+            justify-content: center;
+        }
+
         #cta .container {
             text-align: center;
+        }
+
+        #cta footer {
+            width: 100%;
+            margin-top: auto;
         }
 
         #cta .section-headline {
@@ -966,23 +976,21 @@
                 </form>
                 <p class="fine-print">No commitment. We'll be in touch within 48 hours.</p>
             </div>
+            <footer>
+                <div class="footer-inner">
+                    <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
+                    <div class="footer-row">
+                        <a href="https://newinsights.ai">newinsights.ai</a>
+                        <span class="footer-sep">&middot;</span>
+                        <a href="impressum.html">Impressum</a>
+                        <span class="footer-sep">&middot;</span>
+                        <a href="privacy.html">Privacy Policy</a>
+                    </div>
+                </div>
+            </footer>
         </section>
 
     </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
-            <div class="footer-row">
-                <a href="https://newinsights.ai">newinsights.ai</a>
-                <span class="footer-sep">&middot;</span>
-                <a href="impressum.html">Impressum</a>
-                <span class="footer-sep">&middot;</span>
-                <a href="privacy.html">Privacy Policy</a>
-            </div>
-        </div>
-    </footer>
 
     <script>
         // Sticky nav: show on scroll, transparent at top
