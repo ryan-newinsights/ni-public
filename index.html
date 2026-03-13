@@ -31,7 +31,7 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
+            scroll-snap-type: y proximity;
         }
 
         body {
@@ -63,7 +63,7 @@
         }
 
         .nav-inner {
-            max-width: 1200px;
+            max-width: 1248px;
             margin: 0 auto;
             padding: 0 24px;
             display: flex;
@@ -113,7 +113,7 @@
 
         /* ---- LAYOUT ---- */
         .container {
-            max-width: 1200px;
+            max-width: 1248px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -258,12 +258,12 @@
             margin-top: 48px;
         }
 
-        .intro-cards {
+        .output-cards.intro-cards {
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
-        .intro-cards .output-card {
+        .output-cards.intro-cards .output-card {
             padding: 28px;
         }
 
@@ -657,7 +657,7 @@
         }
 
         .footer-inner {
-            max-width: 1200px;
+            max-width: 1248px;
             margin: 0 auto;
             padding: 0 24px;
             text-align: center;
@@ -711,6 +711,11 @@
             .output-cards {
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
+            }
+
+            .output-cards.intro-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .persona-cards {
