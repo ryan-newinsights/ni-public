@@ -1010,17 +1010,42 @@
             }
         }, { passive: true });
 
-        // Email capture with consent validation
+        // Email capture with consent validation → POST to Google Sheets
+        var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbDvXxmwl9TYouF7cDx79Aco2m4mvzcqG4GBCW_hJdO1AsgbGY6DJvle_EmhE88JAuGg/exec';
+
         document.getElementById('cta-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            var form = this;
             var checkbox = document.getElementById('consent');
             var error = document.getElementById('consent-error');
+            var btn = form.querySelector('.btn-submit');
+            var emailInput = form.querySelector('input[type="email"]');
+
             if (!checkbox.checked) {
                 error.classList.add('show');
                 return;
             }
+            if (!emailInput.value || !emailInput.validity.valid) {
+                return;
+            }
             error.classList.remove('show');
-            this.outerHTML = '<p class="cta-thanks">Thanks — we\'ll be in touch within 48 hours.</p>';
+
+            // Loading state
+            btn.disabled = true;
+            btn.textContent = 'submitting...';
+
+            fetch(SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailInput.value })
+            }).then(function() {
+                form.outerHTML = '<p class="cta-thanks">Thanks — we\'ll be in touch within 48 hours.</p>';
+            }).catch(function() {
+                btn.disabled = false;
+                btn.textContent = 'request access';
+                alert('Something went wrong. Please try again.');
+            });
         });
 
         // Hide consent error when checkbox is checked
