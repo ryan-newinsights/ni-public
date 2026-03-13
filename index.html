@@ -980,7 +980,7 @@
                     <p class="consent-error" id="consent-error">Please confirm you agree to be contacted.</p>
                     <button type="submit" class="btn-submit">request access</button>
                 </form>
-                <p class="fine-print">No commitment. We'll be in touch within 48 hours.</p>
+                <p class="fine-print">No commitment. We will contact you shortly.</p>
             </div>
         </section>
 
@@ -1040,7 +1040,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: emailInput.value })
             }).then(function() {
-                form.outerHTML = '<p class="cta-thanks">Thanks — we\'ll be in touch within 48 hours.</p>';
+                form.outerHTML = '<p class="cta-thanks">Thank you. We will contact you shortly.</p>';
             }).catch(function() {
                 btn.disabled = false;
                 btn.textContent = 'request access';
