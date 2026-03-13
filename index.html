@@ -361,23 +361,136 @@
             line-height: 1.6;
         }
 
-        /* ---- SECTOR ---- */
-        #sector {
+        /* ---- PRICING ---- */
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--text);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 32px;
+            background: var(--text);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        .pricing-card .tier-label {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text);
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+
+        .pricing-card .price {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 40px;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .pricing-card .price-sub {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text);
+            opacity: 0.5;
+            margin-bottom: 24px;
+        }
+
+        .pricing-card .feature-list {
+            list-style: none;
+            margin-bottom: 32px;
+            flex-grow: 1;
+        }
+
+        .pricing-card .feature-list li {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text);
+            opacity: 0.7;
+            line-height: 1.5;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-card .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            padding: 0 28px;
+            background: var(--text);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 15px;
+            border: 1px solid var(--text);
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.85;
+        }
+
+        .pricing-cta {
             text-align: center;
         }
 
-        #sector .container {
-            max-width: 600px;
+        .pricing-footer {
+            margin-top: 48px;
+            text-align: center;
         }
 
-        #sector .section-headline {
-            font-size: 28px;
-        }
-
-        #sector p {
+        .pricing-footer p {
+            font-size: 14px;
             color: var(--text);
+            opacity: 0.5;
+            line-height: 1.6;
+        }
+
+        .pricing-footer a {
+            color: var(--text);
+            text-decoration: underline;
+        }
+
+        .pricing-footer a:hover {
             opacity: 0.7;
-            line-height: 1.7;
         }
 
         /* ---- FOOTER CTA ---- */
@@ -565,6 +678,19 @@
                 gap: 16px;
             }
 
+            .pricing-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .pricing-card {
+                padding: 24px;
+            }
+
+            .pricing-badge {
+                left: 24px;
+            }
+
             .step {
                 padding-left: 72px;
             }
@@ -714,12 +840,65 @@
             </div>
         </section>
 
-        <!-- SECTOR SIGNAL -->
-        <section id="sector" class="fade-in section-border">
+        <!-- PRICING -->
+        <section id="pricing" class="fade-in section-border">
             <div class="container">
-                <p class="section-label">Regulatory Context</p>
-                <h2 class="section-headline">Designed for BaFin, ECB, and Solvency II environments.</h2>
-                <p>newinsights output is structured for audit submission — consistent headers, traceable to source, exportable as markdown. Banking, insurance, and asset management teams use newinsights to close the documentation gap that regulators are increasingly requiring them to address.</p>
+                <p class="section-label">Pricing</p>
+                <h2 class="section-headline">Your codebase. Documented.</h2>
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <p class="tier-label">Free &mdash; forever</p>
+                        <p class="price">Free</p>
+                        <p class="price-sub">2 users included</p>
+                        <ul class="feature-list">
+                            <li>3 connected repositories</li>
+                            <li>Bring your own LLM keys</li>
+                            <li>10 documentation runs per month</li>
+                            <li>Inline docstrings, business overviews &amp; system diagrams</li>
+                            <li>Hard cap, no overage</li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="#cta" class="btn-outline" style="width:100%">Start free</a>
+                        </div>
+                    </div>
+                    <div class="pricing-card featured">
+                        <span class="pricing-badge">Most Popular</span>
+                        <p class="tier-label">Starter</p>
+                        <p class="price">&euro;50/mo</p>
+                        <p class="price-sub">Unlimited users included</p>
+                        <ul class="feature-list">
+                            <li>5 connected repositories</li>
+                            <li>Bring your own LLM keys</li>
+                            <li>Real-time documentation updates</li>
+                            <li>All 4 artifact types</li>
+                            <li>Unlimited users</li>
+                            <li>Email support</li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="#cta" class="btn-primary" style="width:100%">Get started</a>
+                        </div>
+                    </div>
+                    <div class="pricing-card">
+                        <p class="tier-label">Enterprise</p>
+                        <p class="price">Custom</p>
+                        <p class="price-sub">Unlimited repos &amp; users</p>
+                        <ul class="feature-list">
+                            <li>Unlimited repositories</li>
+                            <li>On-prem deployable container</li>
+                            <li>Unlimited users</li>
+                            <li>Everything in Starter</li>
+                            <li>Dedicated support &amp; SLA</li>
+                            <li>BaFin / DORA deployment guidance</li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="mailto:info@newinsights.ai" class="btn-outline" style="width:100%">Talk to sales</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pricing-footer">
+                    <p>Enterprise plans with custom commitments available. <a href="mailto:info@newinsights.ai">Contact us</a></p>
+                    <p>All plans use your own LLM API keys &mdash; NewInsights never stores your code or credentials.</p>
+                </div>
             </div>
         </section>
 
