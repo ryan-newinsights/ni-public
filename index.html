@@ -12,9 +12,13 @@
     <style>
         :root {
             --bg: #FFFFFF;
-            --text: #1A1A2E;
+            --text: #1D202B;
             --white: #FFFFFF;
-            --border: #E2E8E7;
+            --border: #E5E7EB;
+            --border-medium: #D1D5DB;
+            --accent: #22C55E;
+            --text-secondary: #6B7280;
+            --text-tertiary: #9CA3AF;
             --font-headline: 'Jost', sans-serif;
             --font-body: 'Open Sans', sans-serif;
         }
@@ -70,11 +74,16 @@
         .logo {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: 22px;
+            font-size: 20px;
             color: var(--text);
             text-decoration: none;
+            letter-spacing: 0.3px;
             opacity: 0;
             transition: opacity 0.3s ease;
+        }
+
+        .logo .accent {
+            color: var(--accent);
         }
 
         nav.scrolled .logo {
@@ -127,13 +136,23 @@
 
         .section-label {
             font-family: var(--font-body);
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--text);
-            opacity: 0.5;
+            color: var(--accent);
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: var(--accent);
         }
 
         .section-headline {
@@ -167,28 +186,49 @@
             padding: 0;
         }
 
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
         .hero-title {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: 70px;
+            font-size: 72px;
             color: var(--text);
-            letter-spacing: -0.02em;
+            letter-spacing: -1px;
+        }
+
+        .hero-title .accent {
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-family: var(--font-body);
+            font-size: 18px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .hero-line {
+            width: 48px;
+            height: 1px;
+            background: var(--border);
         }
 
         /* ---- INTRO ---- */
         .intro-headline {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: 42px;
+            font-size: 40px;
             line-height: 1.3;
             color: var(--text);
             text-align: center;
+            letter-spacing: -0.5px;
             max-width: 780px;
             margin: 0 auto 48px;
-        }
-
-        .intro-headline em {
-            font-style: italic;
         }
 
         .btn-outline {
@@ -224,10 +264,9 @@
 
         /* ---- SOLUTION ---- */
         #solution .solution-body {
-            color: var(--text);
-            opacity: 0.7;
-            font-size: 17px;
-            line-height: 1.7;
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
             max-width: 680px;
             margin-bottom: 48px;
         }
@@ -249,10 +288,9 @@
             font-family: var(--font-body);
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--text);
-            opacity: 0.5;
+            color: var(--text-tertiary);
             margin-bottom: 8px;
         }
 
@@ -267,8 +305,7 @@
         .output-card .card-desc {
             font-family: var(--font-body);
             font-size: 14px;
-            color: var(--text);
-            opacity: 0.7;
+            color: var(--text-secondary);
             line-height: 1.5;
         }
 
@@ -292,12 +329,12 @@
             position: absolute;
             left: 0;
             top: -8px;
-            font-family: var(--font-headline);
+            font-family: var(--font-body);
             font-weight: 300;
-            font-size: 80px;
+            font-size: 56px;
             line-height: 1;
-            color: var(--text);
-            opacity: 0.1;
+            color: var(--border);
+            letter-spacing: -2px;
         }
 
         .step h3 {
@@ -308,9 +345,9 @@
         }
 
         .step p {
-            color: var(--text);
-            opacity: 0.7;
-            font-size: 17px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         /* ---- AUDIENCE ---- */
@@ -330,12 +367,11 @@
 
         .persona-card .role-label {
             font-family: var(--font-body);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--text);
-            opacity: 0.5;
+            color: var(--text-tertiary);
             margin-bottom: 8px;
         }
 
@@ -348,17 +384,17 @@
         }
 
         .persona-card .persona-pain {
-            color: var(--text);
-            opacity: 0.7;
-            font-size: 15px;
+            color: var(--text-secondary);
+            font-size: 14px;
             margin-bottom: 12px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .persona-card .persona-value {
             color: var(--text);
-            font-size: 15px;
-            line-height: 1.6;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         /* ---- PRICING ---- */
@@ -402,7 +438,7 @@
             font-family: var(--font-body);
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--text);
             opacity: 0.5;
@@ -438,7 +474,7 @@
             color: var(--text);
             opacity: 0.7;
             line-height: 1.5;
-            padding: 6px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--border);
         }
 
@@ -479,8 +515,7 @@
 
         .pricing-footer p {
             font-size: 14px;
-            color: var(--text);
-            opacity: 0.5;
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
@@ -505,8 +540,9 @@
         }
 
         #cta .cta-body {
-            color: var(--text);
-            opacity: 0.7;
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
             margin-bottom: 32px;
         }
 
@@ -520,8 +556,8 @@
             width: 100%;
             height: 48px;
             padding: 0 16px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
             font-family: var(--font-body);
             font-size: 15px;
             background: var(--white);
@@ -579,25 +615,25 @@
             width: 100%;
             height: 44px;
             margin-top: 16px;
-            background: var(--white);
-            color: var(--text);
+            background: var(--text);
+            color: var(--white);
             font-family: var(--font-body);
-            font-weight: 400;
-            font-size: 15px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            transition: border-color 0.2s ease;
+            transition: opacity 0.2s ease;
         }
 
         .cta-form .btn-submit:hover {
-            border-color: var(--text);
+            opacity: 0.85;
         }
 
         .fine-print {
             font-size: 12px;
-            color: var(--text);
-            opacity: 0.5;
+            color: var(--text-tertiary);
             text-align: center;
         }
 
@@ -620,9 +656,8 @@
             margin: 0 auto;
             padding: 0 24px;
             text-align: center;
-            font-size: 14px;
-            color: var(--text);
-            opacity: 0.5;
+            font-size: 13px;
+            color: var(--text-tertiary);
         }
 
         .footer-row {
@@ -652,16 +687,16 @@
                 font-size: 40px;
             }
 
+            .hero-sub {
+                font-size: 15px;
+            }
+
             .intro-headline {
                 font-size: 28px;
             }
 
             .section-headline {
                 font-size: 28px;
-            }
-
-            #sector .section-headline {
-                font-size: 24px;
             }
 
             #cta .section-headline {
@@ -717,27 +752,31 @@
     <!-- NAV -->
     <nav id="nav">
         <div class="nav-inner">
-            <a href="index.html" class="logo">newinsights.ai</a>
+            <a href="index.html" class="logo">newinsights<span class="accent">.ai</span></a>
             <a href="#cta" class="nav-cta">request access</a>
         </div>
     </nav>
 
     <main>
 
-        <!-- HERO: full viewport, just the name -->
+        <!-- HERO -->
         <section id="hero">
-            <h1 class="hero-title">newinsights.ai</h1>
+            <div class="hero-content">
+                <h1 class="hero-title">newinsights<span class="accent">.ai</span></h1>
+                <p class="hero-sub">Organizational intelligence from IT</p>
+                <div class="hero-line"></div>
+            </div>
         </section>
 
         <!-- INTRO -->
         <section id="intro" class="fade-in">
             <div class="container">
-                <h2 class="intro-headline">code <em>is</em> the enterprise knowledge base</h2>
+                <h2 class="intro-headline">code is the enterprise knowledge base</h2>
                 <div class="output-cards intro-cards">
                     <div class="output-card">
                         <p class="card-label">Compliance</p>
-                        <p class="card-title">audit doesn't verify the code</p>
-                        <p class="card-desc">Regulators increasingly require IT systems to be documented to auditable standards. But the documentation rarely reflects what the code actually does.</p>
+                        <p class="card-title">documentation rooted in code</p>
+                        <p class="card-desc">A documented traceable chain of every IT system in the enterprise based on your codebase. Absolute clarity on what is built, how it is tested and how data moves through your IT landscape.</p>
                     </div>
                     <div class="output-card">
                         <p class="card-label">Modernisation</p>
@@ -794,17 +833,17 @@
                 <h2 class="section-headline">Three steps from repository to documentation.</h2>
                 <div class="steps">
                     <div class="step">
-                        <span class="step-number">1</span>
+                        <span class="step-number">01</span>
                         <h3>Analyse</h3>
                         <p>newinsights parses your codebase using a production-grade syntax parser to build a precise dependency map. Every class, function, and module relationship is resolved before any AI processing begins.</p>
                     </div>
                     <div class="step">
-                        <span class="step-number">2</span>
+                        <span class="step-number">02</span>
                         <h3>Generate</h3>
                         <p>A coordinated team of AI agents works through your codebase in dependency order. The Reader understands context. The Searcher finds relevant references. The Writer produces documentation to your standards.</p>
                     </div>
                     <div class="step">
-                        <span class="step-number">3</span>
+                        <span class="step-number">03</span>
                         <h3>Verify</h3>
                         <p>A dedicated Verifier agent reviews every output against quality criteria before it is accepted. Outputs that don't meet the standard are rejected and rewritten — automatically.</p>
                     </div>
@@ -813,9 +852,9 @@
         </section>
 
         <!-- WHO IT'S FOR -->
-        <section id="audience" class="fade-in section-border">
+        <section id="audience" class="fade-in">
             <div class="container">
-                <p class="section-label">Target Audience</p>
+                <p class="section-label">The User</p>
                 <h2 class="section-headline">Built for regulated industries.</h2>
                 <div class="persona-cards">
                     <div class="persona-card">
@@ -847,14 +886,14 @@
                 <h2 class="section-headline">Your codebase. Documented.</h2>
                 <div class="pricing-cards">
                     <div class="pricing-card">
-                        <p class="tier-label">Free &mdash; forever</p>
+                        <p class="tier-label">Free</p>
                         <p class="price">Free</p>
                         <p class="price-sub">2 users included</p>
                         <ul class="feature-list">
                             <li>3 connected repositories</li>
                             <li>Bring your own LLM keys</li>
-                            <li>10 documentation runs per month</li>
-                            <li>Inline docstrings, business overviews &amp; system diagrams</li>
+                            <li>10 documentation runs / month</li>
+                            <li>Docstrings, overviews &amp; diagrams</li>
                             <li>Hard cap, no overage</li>
                         </ul>
                         <div class="pricing-cta">
@@ -896,8 +935,7 @@
                     </div>
                 </div>
                 <div class="pricing-footer">
-                    <p>Enterprise plans with custom commitments available. <a href="mailto:info@newinsights.ai">Contact us</a></p>
-                    <p>All plans use your own LLM API keys &mdash; NewInsights never stores your code or credentials.</p>
+                    <p>Enterprise plans with custom commitments available.</p>
                 </div>
             </div>
         </section>
