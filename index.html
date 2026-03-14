@@ -205,17 +205,19 @@
             color: var(--accent);
         }
 
-        .hero-sub {
-            font-family: var(--font-body);
-            font-size: 18px;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
+        .scroll-hint {
+            position: fixed;
+            bottom: 16px;
+            right: 32px;
+            color: var(--text-tertiary);
+            animation: nudge 3s ease infinite;
+            transition: opacity 0.3s ease;
+            z-index: 50;
         }
 
-        .hero-line {
-            width: 48px;
-            height: 1px;
-            background: var(--border);
+        @keyframes nudge {
+            0%, 90%, 100% { transform: translateY(0); }
+            95% { transform: translateY(4px); }
         }
 
         /* ---- INTRO ---- */
@@ -789,10 +791,12 @@
         <section id="hero">
             <div class="hero-content">
                 <h1 class="hero-title">newinsights<span class="accent">.ai</span></h1>
-                <p class="hero-sub">Organizational intelligence from IT</p>
-                <div class="hero-line"></div>
             </div>
         </section>
+
+        <div class="scroll-hint" id="scroll-hint" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>
+        </div>
 
         <!-- INTRO -->
         <section id="intro" class="fade-in">
@@ -829,7 +833,7 @@
                 <p class="solution-body">newinsights connects to your repository and uses a multi-agent AI pipeline to analyse, document, and verify every component in your codebase. The result is structured documentation your compliance team can trust and your engineers can actually use.</p>
                 <div class="output-cards">
                     <div class="output-card">
-                        <p class="card-label">Inline Docs</p>
+                        <p class="card-label">Code Docs</p>
                         <p class="card-title">Docstrings</p>
                         <p class="card-desc">Context-aware documentation for every function, class, and method.</p>
                     </div>
@@ -1079,6 +1083,13 @@
             });
         }, { threshold: 0.5 });
         footerObserver.observe(document.getElementById('cta'));
+
+        // Hide scroll hint after leaving hero
+        var scrollHint = document.getElementById('scroll-hint');
+        var heroObserver = new IntersectionObserver(function(entries) {
+            scrollHint.style.opacity = entries[0].isIntersecting ? '' : '0';
+        }, { threshold: 0.5 });
+        heroObserver.observe(document.getElementById('hero'));
     </script>
 
 </body>
