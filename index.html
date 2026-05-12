@@ -41,7 +41,7 @@
             box-sizing: border-box;
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 
         body {
             background: var(--bg);
@@ -764,8 +764,10 @@
         @media (max-width: 900px) {
             .compare-grid { grid-template-columns: 1fr; }
             .what-list { grid-template-columns: 1fr; }
+            .what-item,
             .what-item:nth-child(even) {
                 padding-left: 0;
+                padding-right: 0;
                 border-left: none;
             }
             .team-row { grid-template-columns: 1fr; gap: 32px; }
