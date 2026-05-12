@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>newinsights — Codebase Documentation, Automated</title>
-    <meta name="description" content="newinsights transforms legacy and modern codebases into structured, audit-ready documentation — automatically.">
+    <title>newinsights.ai — Your AI agents are running on docs from 2019</title>
+    <meta name="description" content="newinsights.ai makes the source code itself the knowledge base — audit-grade documentation, business overviews and architecture diagrams generated and verified from code on every commit.">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Open+Sans:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #FFFFFF;
-            --text: #1D202B;
+            --bg-subtle: hsl(220 14% 96%);
+            --bg-muted: hsl(220 14% 92%);
+            --bg-ink: hsl(224 22% 10%);
+            --text: hsl(224 20% 14%);
+            --fg-muted: hsl(220 9% 46%);
+            --fg-subtle: hsl(220 9% 60%);
             --white: #FFFFFF;
-            --border: #E5E7EB;
-            --border-medium: #D1D5DB;
-            --accent: #22C55E;
-            --text-secondary: #6B7280;
-            --text-tertiary: #9CA3AF;
+            --border: hsl(220 13% 91%);
+            --border-medium: hsl(220 13% 82%);
+            --brand-accent: hsl(142 71% 45%);
+            --brand-accent-hover: hsl(142 71% 38%);
+            --brand-accent-bg: hsl(142 76% 94%);
+            --accent: var(--brand-accent);
+            --text-secondary: var(--fg-muted);
+            --text-tertiary: var(--fg-subtle);
+            --danger: hsl(0 84% 60%);
             --font-headline: 'Jost', sans-serif;
-            --font-body: 'Open Sans', sans-serif;
+            --font-body: 'Inter', 'Open Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+            --radius: 6px;
+            --radius-md: 8px;
         }
 
         *, *::before, *::after {
@@ -29,118 +41,680 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
-        }
+        html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 
         body {
             background: var(--bg);
             color: var(--text);
             font-family: var(--font-body);
-            font-size: 17px;
-            line-height: 1.7;
+            font-size: 16px;
+            line-height: 1.55;
             -webkit-font-smoothing: antialiased;
         }
 
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; cursor: pointer; }
+
         /* ---- NAV ---- */
         nav {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: transparent;
-            transition: background 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
-            padding: 20px 0;
-            border-bottom: 1px solid transparent;
-        }
-
-        nav.scrolled {
-            background: var(--white);
-            padding: 12px 0;
-            border-bottom-color: var(--border);
+            z-index: 50;
+            height: 60px;
+            background: var(--bg-ink);
+            color: white;
+            border-bottom: 1px solid hsl(224 18% 18%);
         }
 
         .nav-inner {
-            max-width: 1248px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            height: 100%;
+            padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .logo {
-            font-family: var(--font-headline);
-            font-weight: 300;
-            font-size: 20px;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: 0.3px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .logo .accent {
-            color: var(--accent);
-        }
-
-        nav.scrolled .logo {
-            opacity: 1;
-        }
-
-        .nav-cta {
-            font-family: var(--font-body);
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--text);
-            text-decoration: none;
-            padding: 6px 16px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.3s ease, border-color 0.2s ease;
-        }
-
-        nav.scrolled .nav-cta {
-            opacity: 1;
-        }
-
-        .nav-cta:hover {
-            border-color: var(--text);
-        }
-
-        /* ---- LAYOUT ---- */
-        .container {
-            max-width: 1248px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        section {
-            min-height: 100vh;
+        .nav-left {
             display: flex;
             align-items: center;
-            padding: 80px 0;
-            scroll-snap-align: start;
+            gap: 40px;
         }
 
-        section > .container {
-            width: 100%;
+        .brand {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 18px;
+            color: white;
+            letter-spacing: -0.01em;
         }
 
-        .section-border {
+        .brand .dot { color: var(--brand-accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 13px;
+            color: hsl(0 0% 70%);
+        }
+
+        .nav-links a:hover { color: white; }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 18px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: background 180ms ease, border-color 180ms ease, opacity 180ms ease;
+            white-space: nowrap;
+        }
+
+        .btn-accent {
+            background: var(--brand-accent);
+            color: white;
+        }
+
+        .btn-accent:hover { background: var(--brand-accent-hover); }
+
+        .btn-lg {
+            height: 48px;
+            padding: 0 22px;
+            font-size: 15px;
+        }
+
+        nav .btn-accent {
+            height: 36px;
+            padding: 0 16px;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            background: var(--bg-ink);
+            color: white;
+            padding: 80px 32px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 50% 70% at 80% 30%, hsl(142 71% 45% / 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: hsl(0 84% 60% / 0.12);
+            border: 1px solid hsl(0 84% 60% / 0.3);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: hsl(0 84% 75%);
+            margin-bottom: 32px;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-tag-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: hsl(0 84% 60%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 84px;
+            line-height: 0.98;
+            letter-spacing: -0.035em;
+            color: white;
+            margin-bottom: 32px;
+            max-width: 1000px;
+        }
+
+        .hero h1 .accent {
+            color: var(--brand-accent);
+            font-weight: 400;
+        }
+
+        .hero-sub {
+            font-size: 21px;
+            line-height: 1.5;
+            color: hsl(0 0% 78%);
+            max-width: 780px;
+            margin-bottom: 44px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .hero-meta {
+            margin-top: 64px;
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: hsl(0 0% 55%);
+            letter-spacing: 0.04em;
+        }
+
+        .hero-meta div strong {
+            color: white;
+            font-weight: 500;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+            letter-spacing: 0;
+        }
+
+        /* ---- SHARED ---- */
+        .eyebrow {
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--fg-muted);
+            margin-bottom: 18px;
+        }
+
+        /* ---- THESIS ---- */
+        .thesis {
+            padding: 96px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .thesis-inner { max-width: 1100px; margin: 0 auto; }
+        .thesis-eyebrow { color: var(--fg-muted); font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 18px; }
+
+        .thesis h2 {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 52px;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            margin-bottom: 64px;
+            max-width: 900px;
+        }
+
+        .claims { display: flex; flex-direction: column; }
+
+        .claim {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 32px;
+            padding: 36px 0;
+            border-top: 1px solid var(--border);
+            align-items: start;
+        }
+
+        .claim:last-child { border-bottom: 1px solid var(--border); }
+
+        .claim-num {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 56px;
+            line-height: 1;
+            color: var(--fg-subtle);
+            letter-spacing: -0.04em;
+        }
+
+        .claim-h {
+            font-family: var(--font-headline);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.25;
+            margin-bottom: 12px;
+            letter-spacing: -0.015em;
+        }
+
+        .claim-h .accent { color: var(--brand-accent); }
+
+        .claim-d {
+            font-size: 17px;
+            color: var(--fg-muted);
+            line-height: 1.55;
+            max-width: 720px;
+        }
+
+        /* ---- COMPARE ---- */
+        .compare {
+            padding: 96px 32px;
+            background: var(--bg-subtle);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-inner { max-width: 1100px; margin: 0 auto; }
+        .compare-head { text-align: center; margin-bottom: 56px; }
+        .compare-eyebrow { color: var(--fg-muted); font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 16px; }
+
+        .compare-head h2 {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 44px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .demo-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+
+        .demo-card.bad { border-color: hsl(0 84% 88%); }
+        .demo-card.good { border-color: hsl(142 60% 80%); }
+
+        .demo-bar {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--fg-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: var(--bg-subtle);
+        }
+
+        .demo-card.bad .demo-bar { background: hsl(0 80% 97%); }
+        .demo-card.good .demo-bar { background: hsl(142 76% 96%); }
+
+        .demo-bar .stamp { font-weight: 500; letter-spacing: 0.08em; }
+        .demo-card.bad .demo-bar .stamp { color: var(--danger); }
+        .demo-card.good .demo-bar .stamp { color: var(--brand-accent-hover); }
+
+        .demo-body { padding: 24px 22px; }
+
+        .demo-h {
+            font-family: var(--font-headline);
+            font-weight: 500;
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .demo-meta {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--fg-subtle);
+            margin-bottom: 16px;
+        }
+
+        .demo-text {
+            font-size: 13.5px;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .demo-text.faded {
+            color: var(--fg-subtle);
+            font-style: italic;
+        }
+
+        .demo-issue {
+            margin-top: 14px;
+            padding: 10px 12px;
+            background: hsl(0 80% 97%);
+            border: 1px solid hsl(0 80% 90%);
+            border-radius: var(--radius);
+            font-size: 12.5px;
+            color: hsl(0 70% 40%);
+            line-height: 1.5;
+        }
+
+        .demo-cite {
+            margin-top: 14px;
+            padding: 10px 12px;
+            background: hsl(142 76% 96%);
+            border: 1px solid hsl(142 60% 88%);
+            border-radius: var(--radius);
+            font-size: 12px;
+            color: hsl(142 60% 25%);
+            font-family: var(--font-mono);
+            line-height: 1.5;
+        }
+
+        .compare-cite {
+            text-align: center;
+            font-size: 13px;
+            color: var(--fg-muted);
+            margin: 36px auto 0;
+            max-width: 720px;
+            line-height: 1.55;
+        }
+
+        .compare-cite a {
+            color: var(--fg-muted);
+            text-decoration: underline;
+        }
+
+        .compare-cite a:hover { color: var(--text); }
+
+        /* ---- WHAT ---- */
+        .what {
+            padding: 96px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .what-inner { max-width: 1100px; margin: 0 auto; }
+
+        .what-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 48px;
+            margin-bottom: 56px;
+            flex-wrap: wrap;
+        }
+
+        .what-head h2 {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 44px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            max-width: 720px;
+        }
+
+        .what-head p {
+            font-size: 16px;
+            color: var(--fg-muted);
+            max-width: 780px;
+        }
+
+        .what-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
             border-top: 1px solid var(--border);
         }
 
-        .section-headline {
+        .what-item {
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 20px;
+            align-items: start;
+            padding-right: 32px;
+        }
+
+        .what-item:nth-child(even) {
+            padding-right: 0;
+            padding-left: 32px;
+            border-left: 1px solid var(--border);
+        }
+
+        .what-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--brand-accent-bg);
+            color: var(--brand-accent-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .what-h {
+            font-family: var(--font-headline);
+            font-weight: 500;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .what-d {
+            font-size: 14.5px;
+            color: var(--fg-muted);
+            line-height: 1.55;
+        }
+
+        /* ---- TEAM ---- */
+        .team {
+            padding: 96px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .team-inner { max-width: 1100px; margin: 0 auto; }
+        .team-eyebrow { color: var(--fg-muted); font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 18px; }
+
+        .team h2 {
             font-family: var(--font-headline);
             font-weight: 300;
-            font-size: 36px;
-            line-height: 1.25;
+            font-size: 44px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 56px;
+            max-width: 760px;
+        }
+
+        .team-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 56px;
+            align-items: start;
+        }
+
+        .founder {
+            display: flex;
+            gap: 24px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+        }
+
+        .founder:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .f-avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--bg-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-headline);
+            font-weight: 500;
+            font-size: 22px;
+            color: var(--fg-muted);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .f-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .f-name {
+            font-family: var(--font-headline);
+            font-weight: 500;
+            font-size: 19px;
+            margin-bottom: 2px;
+        }
+
+        .f-role {
+            font-size: 13px;
+            color: var(--brand-accent);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .f-bio {
+            font-size: 14px;
+            color: var(--fg-muted);
+            line-height: 1.55;
+        }
+
+        /* ---- CTA ---- */
+        #cta {
+            padding: 120px 32px;
+            background: var(--brand-accent);
+            color: white;
+        }
+
+        .cta-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #cta .section-headline {
+            font-family: var(--font-headline);
+            font-weight: 300;
+            font-size: 64px;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        #cta .cta-body {
+            font-size: 19px;
+            color: hsl(142 76% 92%);
+            margin-bottom: 40px;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-form {
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .cta-form input[type="email"] {
+            width: 100%;
+            height: 52px;
+            padding: 0 18px;
+            border: 1px solid white;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 15px;
+            background: var(--white);
             color: var(--text);
-            margin-bottom: 32px;
+            outline: none;
+        }
+
+        .cta-form input[type="email"]::placeholder { color: var(--fg-subtle); }
+        .cta-form input[type="email"]:focus { border-color: var(--bg-ink); }
+
+        .consent-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .consent-row input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: var(--bg-ink);
+            flex-shrink: 0;
+        }
+
+        .consent-row label {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: white;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .consent-row label a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .consent-error {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 500;
+            color: hsl(0 75% 25%);
+            background: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .consent-error.show { display: inline-block; }
+
+        .cta-form .btn-submit {
+            display: block;
+            width: 100%;
+            height: 52px;
+            margin-top: 16px;
+            background: var(--bg-ink);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background 180ms ease;
+        }
+
+        .cta-form .btn-submit:hover { background: black; }
+
+        .cta-thanks {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 17px;
+            color: white;
+            text-align: center;
+            padding-top: 14px;
         }
 
         /* ---- FADE-IN ---- */
@@ -155,265 +729,256 @@
             transform: translateY(0);
         }
 
-        /* ---- HERO ---- */
-        #hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            min-height: 500px;
-            padding: 0;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .hero-title {
-            font-family: var(--font-headline);
-            font-weight: 300;
-            font-size: 72px;
-            color: var(--text);
-            letter-spacing: -1px;
-        }
-
-        .hero-title .accent {
-            color: var(--accent);
-        }
-
-        .scroll-hint {
-            position: fixed;
-            bottom: 16px;
-            right: 32px;
-            color: var(--text-tertiary);
-            animation: nudge 3s ease infinite;
-            transition: opacity 0.3s ease;
-            z-index: 50;
-        }
-
-        @keyframes nudge {
-            0%, 90%, 100% { transform: translateY(0); }
-            95% { transform: translateY(4px); }
-        }
-
-        /* ---- FOOTER CTA ---- */
-
-        #cta .container {
-            text-align: center;
-        }
-
-        #cta .section-headline {
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-
-        #cta .cta-body {
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 32px;
-        }
-
-        .cta-form {
-            max-width: 480px;
-            margin: 0 auto 16px;
-            text-align: left;
-        }
-
-        .cta-form input[type="email"] {
-            width: 100%;
-            height: 48px;
-            padding: 0 16px;
-            border: 1px solid var(--border-medium);
-            border-radius: 8px;
-            font-family: var(--font-body);
-            font-size: 15px;
-            background: var(--white);
-            outline: none;
-        }
-
-        .cta-form input[type="email"]:focus {
-            border-color: var(--text);
-        }
-
-        .consent-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .consent-row input[type="checkbox"] {
-            margin-top: 3px;
-            accent-color: var(--text);
-            flex-shrink: 0;
-        }
-
-        .consent-row label {
-            font-family: var(--font-body);
-            font-size: 13px;
-            color: var(--text);
-            opacity: 0.7;
-            line-height: 1.5;
-        }
-
-        .consent-row label a {
-            color: var(--text);
-            text-decoration: underline;
-        }
-
-        .consent-row label a:hover {
-            text-decoration: underline;
-        }
-
-        .consent-error {
-            font-family: var(--font-body);
-            font-size: 12px;
-            color: #DC2626;
-            margin-top: 4px;
-            display: none;
-        }
-
-        .consent-error.show {
-            display: block;
-        }
-
-        .cta-form .btn-submit {
-            display: block;
-            width: 100%;
-            height: 44px;
-            margin-top: 16px;
-            background: var(--text);
-            color: var(--white);
-            font-family: var(--font-body);
-            font-weight: 500;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-        }
-
-        .cta-form .btn-submit:hover {
-            opacity: 0.85;
-        }
-
-        .cta-thanks {
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 17px;
-            color: var(--text);
-            text-align: center;
-        }
-
         /* ---- FOOTER ---- */
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            padding: 16px 0;
-            background: var(--white);
-            border-top: 1px solid var(--border);
-            opacity: 0;
-            transform: translateY(100%);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
-        }
-
-        footer.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
+            background: var(--bg-ink);
+            color: hsl(0 0% 65%);
+            padding: 32px;
         }
 
         .footer-inner {
-            max-width: 1248px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 24px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
             font-size: 13px;
-            color: var(--text-tertiary);
         }
 
-        .footer-row {
-            margin-bottom: 8px;
+        .footer-inner .brand {
+            font-size: 16px;
+            color: white;
         }
 
-        .footer-row:last-child {
-            margin-bottom: 0;
-        }
+        .footer-inner a { color: hsl(0 0% 75%); }
+        .footer-inner a:hover { color: white; }
 
-        .footer-inner a {
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .footer-inner a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-sep {
-            margin: 0 4px;
+        .footer-links {
+            display: flex;
+            gap: 24px;
         }
 
         /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .compare-grid { grid-template-columns: 1fr; }
+            .what-list { grid-template-columns: 1fr; }
+            .what-item,
+            .what-item:nth-child(even) {
+                padding-left: 0;
+                padding-right: 0;
+                border-left: none;
+            }
+            .team-row { grid-template-columns: 1fr; gap: 32px; }
+        }
+
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 40px;
-            }
-
-            .hero-sub {
-                font-size: 15px;
-            }
-
-            .section-headline {
-                font-size: 28px;
-            }
-
-            #cta .section-headline {
-                font-size: 26px;
-            }
-
-            section {
-                padding: 64px 0;
-            }
+            .nav-links { display: none; }
+            .hero { padding: 56px 24px 80px; }
+            .hero h1 { font-size: 44px; }
+            .hero-sub { font-size: 17px; }
+            .hero-meta { gap: 24px; }
+            .thesis, .compare, .what, .team { padding: 64px 24px; }
+            .thesis h2 { font-size: 32px; margin-bottom: 40px; }
+            .claim { grid-template-columns: 56px 1fr; gap: 16px; padding: 24px 0; }
+            .claim-num { font-size: 36px; }
+            .claim-h { font-size: 22px; }
+            .compare-head h2,
+            .what-head h2,
+            .team h2 { font-size: 28px; }
+            #cta { padding: 80px 24px; }
+            #cta .section-headline { font-size: 38px; }
+            #cta .cta-body { font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
     <nav id="nav">
         <div class="nav-inner">
-            <a href="index.html" class="logo">newinsights<span class="accent">.ai</span></a>
-            <a href="#cta" class="nav-cta">request access</a>
+            <div class="nav-left">
+                <a class="brand" href="#">newinsights<span class="dot">.ai</span></a>
+                <div class="nav-links">
+                    <a href="#thesis">The Gap</a>
+                    <a href="#what">Platform</a>
+                    <a href="#team">Team</a>
+                </div>
+            </div>
+            <a href="#cta" class="btn btn-accent">Request access</a>
         </div>
     </nav>
 
     <main>
 
         <!-- HERO -->
-        <section id="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">newinsights<span class="accent">.ai</span></h1>
+        <section class="hero" id="hero">
+            <div class="hero-inner">
+                <div class="hero-tag">
+                    <span class="hero-tag-dot"></span>
+                    <span>Your AI agents are running on docs from 2019.</span>
+                </div>
+                <h1>The <span class="accent">codebase</span> is the only thing that's&nbsp;actually true.</h1>
+                <p class="hero-sub">Wikis lie. Diagrams drift. The retiring engineer hates writing documentation. newinsights.ai makes the source code itself the knowledge base — audit-grade documentation, business overviews and architecture diagrams generated and verified from code on every commit.</p>
+                <div class="hero-ctas">
+                    <a href="#cta" class="btn btn-accent btn-lg">Request access</a>
+                </div>
+                <div class="hero-meta">
+                    <div><strong>Code-to-knowledge platform</strong>For regulated DACH financial services</div>
+                    <div><strong>On-prem · BYO keys · DORA-aligned</strong>Source code never leaves your perimeter</div>
+                    <div><strong>Legacy code base support</strong>25+ supported languages</div>
+                </div>
             </div>
         </section>
 
-        <div class="scroll-hint" id="scroll-hint" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>
-        </div>
+        <!-- THESIS -->
+        <section class="thesis fade-in" id="thesis">
+            <div class="thesis-inner">
+                <div class="thesis-eyebrow">The Gap</div>
+                <h2>Three uncomfortable facts you already know about deploying AI in legacy app landscapes.</h2>
+                <div class="claims">
+                    <div class="claim">
+                        <div class="claim-num">01</div>
+                        <div>
+                            <h3 class="claim-h">You want to ship faster. <span class="accent">Every release is still a gamble.</span></h3>
+                            <p class="claim-d">A change to one core system touches forty others — and the map of those dependencies lives in people's heads, not in any system of record. You approve the release. Then you find out what it broke.</p>
+                        </div>
+                    </div>
+                    <div class="claim">
+                        <div class="claim-num">02</div>
+                        <div>
+                            <h3 class="claim-h">AI coding agents are now writing your new code. <span class="accent">They learn from your stale docs.</span></h3>
+                            <p class="claim-d">Every coding agent grounds itself in old documentation and the minimal context it holds in a session. Bad docs propagate into bad code, faster than ever before.</p>
+                        </div>
+                    </div>
+                    <div class="claim">
+                        <div class="claim-num">03</div>
+                        <div>
+                            <h3 class="claim-h">The senior engineer who knows the legacy core <span class="accent">retires in eighteen months.</span></h3>
+                            <p class="claim-d">The cost of finding out what they knew, after they leave, is not a documentation cost. It is a transformation programme that stalls.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- FOOTER CTA -->
-        <section id="cta" class="fade-in section-border">
-            <div class="container">
-                <h2 class="section-headline">Ready to close the knowledge gap?</h2>
-                <p class="cta-body">We're working with a small group of early customers in regulated financial services. If that's you, let's talk.</p>
+        <!-- COMPARE -->
+        <section class="compare fade-in">
+            <div class="compare-inner">
+                <div class="compare-head">
+                    <div class="compare-eyebrow">Wrong vs. verified</div>
+                    <h2>Same function. Different documentation. One of these will pass an audit.</h2>
+                </div>
+                <div class="compare-grid">
+                    <div class="demo-card bad">
+                        <div class="demo-bar">
+                            <span>wiki / payments-core</span>
+                            <span class="stamp">CONFLUENCE · LAST EDITED 2021</span>
+                        </div>
+                        <div class="demo-body">
+                            <div class="demo-h">Settlement Engine</div>
+                            <div class="demo-meta">unverified · drift unknown</div>
+                            <p class="demo-text faded">"Handles settlement of payments. Uses the legacy clearing system. Owned by the Payments team. See PROJ-1184 for details."</p>
+                            <div class="demo-issue">
+                                <strong>Three years stale.</strong> The legacy clearing system was decommissioned in 2023. PROJ-1184 was archived. The Payments team was reorganised twice. None of this matches the code.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-card good">
+                        <div class="demo-bar">
+                            <span>newinsights / payments-core</span>
+                            <span class="stamp">VERIFIED · 18 DEC 25 · COMMIT a3f12c8</span>
+                        </div>
+                        <div class="demo-body">
+                            <div class="demo-h">Settlement Engine</div>
+                            <div class="demo-meta">verified against 14 source lines · 6/6 quality criteria</div>
+                            <p class="demo-text">Reconciles intra-day SEPA Instant payment messages against the ledger and emits T+0 settlement instructions to the Bundesbank gateway. Replaces the legacy clearing path decommissioned in PROJ-2019.</p>
+                            <div class="demo-cite">
+                                cited:  settlement_engine.py:42-89, sepa_validator.py:15-31, ledger.py:204
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="compare-cite">Based on the peer-reviewed research <a href="https://arxiv.org/abs/2504.08725" target="_blank" rel="noopener">arXiv:2504.08725</a></p>
+            </div>
+        </section>
+
+        <!-- WHAT WE DO -->
+        <section class="what fade-in" id="what">
+            <div class="what-inner">
+                <div class="what-head">
+                    <div>
+                        <div class="eyebrow">What we do</div>
+                        <h2>A code-to-knowledge platform. Not a documentation tool.</h2>
+                    </div>
+                    <p>The difference: documentation tools take what you write and make it look nice. We take what your code actually does and turn it into the knowledge your organization needs.</p>
+                </div>
+                <div class="what-list">
+                    <div class="what-item">
+                        <div class="what-num">01</div>
+                        <div>
+                            <div class="what-h">Living docs, not one-shot</div>
+                            <div class="what-d">Re-runs on every commit. The documentation a regulator reads next quarter reflects the code that shipped this morning.</div>
+                        </div>
+                    </div>
+                    <div class="what-item">
+                        <div class="what-num">02</div>
+                        <div>
+                            <div class="what-h">Verified, not hallucinated</div>
+                            <div class="what-d">A dedicated Verifier agent rejects outputs that don't meet the bar. Failed drafts are rewritten — automatically — until they pass.</div>
+                        </div>
+                    </div>
+                    <div class="what-item">
+                        <div class="what-num">03</div>
+                        <div>
+                            <div class="what-h">Grounded, not guessed</div>
+                            <div class="what-d">A dependency map is built from the source itself, function by function, call by call, before any LLM is involved. Documentation describes what's true in the code — not what sounds plausible.</div>
+                        </div>
+                    </div>
+                    <div class="what-item">
+                        <div class="what-num">04</div>
+                        <div>
+                            <div class="what-h">On-prem &amp; BYO keys</div>
+                            <div class="what-d">Single Docker image inside your firewall. Use your own Azure / GCP / OpenAI / Bedrock / self-hosted endpoints. We never see the source code.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM -->
+        <section class="team fade-in" id="team">
+            <div class="team-inner">
+                <div class="team-eyebrow">Who's behind this</div>
+                <h2>Built by the people who have lived this problem.</h2>
+                <div class="team-row">
+                    <div>
+                        <div class="founder">
+                            <div class="f-avatar"><img src="assets/ryan-grenier.jpg" alt="Ryan Grenier"></div>
+                            <div>
+                                <div class="f-name">Ryan Grenier</div>
+                                <div class="f-role">Founder &amp; CEO</div>
+                                <p class="f-bio">Most recently a Managing Director in Commerzbank's Big Data Group in Frankfurt, Germany. Previously a GM at Amazon AWS, CMO of Rackspace (Nasdaq: RXT), Head of Product at two successfully exited startups and Yahoo!</p>
+                            </div>
+                        </div>
+                        <div class="founder">
+                            <div class="f-avatar"><img src="assets/shriram-ramamurthy.jpg" alt="Shriram Ramamurthy"></div>
+                            <div>
+                                <div class="f-name">Shriram (Ram) Ramamurthy</div>
+                                <div class="f-role">Founder &amp; CTO</div>
+                                <p class="f-bio">Lead platform and engineering development at Telescope Partners, a SF-based VC with $900M AUM. At Amazon and AWS Ram built massive scale systems for ultra-fast grocery delivery and gaming infrastructure.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section id="cta" class="fade-in">
+            <div class="cta-inner">
+                <h2 class="section-headline">Stop guessing what your code does.</h2>
+                <p class="cta-body">Closed beta with a small group of regulated banks and insurers in DACH. If documentation gaps are on your risk register, write to us.</p>
                 <form class="cta-form" id="cta-form" novalidate>
                     <input type="email" placeholder="Your work email address" required aria-label="Email address">
                     <div class="consent-row">
@@ -430,28 +995,16 @@
 
     <footer>
         <div class="footer-inner">
-            <div class="footer-row">&copy; 2025 newinsights. All rights reserved.</div>
-            <div class="footer-row">
-                <a href="https://newinsights.ai">newinsights.ai</a>
-                <span class="footer-sep">&middot;</span>
+            <a class="brand" href="#">newinsights<span class="dot">.ai</span></a>
+            <div class="footer-links">
                 <a href="impressum.html">Impressum</a>
-                <span class="footer-sep">&middot;</span>
-                <a href="privacy.html">Privacy Policy</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="mailto:info@newinsights.ai">info@newinsights.ai</a>
             </div>
         </div>
     </footer>
 
     <script>
-        // Sticky nav: show on scroll, transparent at top
-        var nav = document.getElementById('nav');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 80) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        }, { passive: true });
-
         // Email capture with consent validation → POST to Google Sheets
         var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbDvXxmwl9TYouF7cDx79Aco2m4mvzcqG4GBCW_hJdO1AsgbGY6DJvle_EmhE88JAuGg/exec';
 
@@ -509,26 +1062,6 @@
         document.querySelectorAll('.fade-in').forEach(function(el) {
             observer.observe(el);
         });
-
-        // Show footer only when CTA (last panel) is visible
-        var footerEl = document.querySelector('footer');
-        var footerObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    footerEl.classList.add('is-visible');
-                } else {
-                    footerEl.classList.remove('is-visible');
-                }
-            });
-        }, { threshold: 0.5 });
-        footerObserver.observe(document.getElementById('cta'));
-
-        // Hide scroll hint after leaving hero
-        var scrollHint = document.getElementById('scroll-hint');
-        var heroObserver = new IntersectionObserver(function(entries) {
-            scrollHint.style.opacity = entries[0].isIntersecting ? '' : '0';
-        }, { threshold: 0.5 });
-        heroObserver.observe(document.getElementById('hero'));
     </script>
 
 </body>
