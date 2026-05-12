@@ -48,11 +48,15 @@ mkdir -p "$WEB_ROOT"
 
 # Step 3: Copy website files
 log_info "Copying website files..."
-for f in index.html impressum.html privacy.html favicon.svg; do
+for f in index.html impressum.html privacy.html favicon.png favicon.svg; do
     if [[ -f "$SCRIPT_DIR/$f" ]]; then
         cp "$SCRIPT_DIR/$f" "$WEB_ROOT/$f"
     fi
 done
+if [[ -d "$SCRIPT_DIR/assets" ]]; then
+    mkdir -p "$WEB_ROOT/assets"
+    cp -R "$SCRIPT_DIR/assets/." "$WEB_ROOT/assets/"
+fi
 chown -R www-data:www-data "$WEB_ROOT"
 chmod -R 755 "$WEB_ROOT"
 
