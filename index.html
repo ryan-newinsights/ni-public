@@ -605,7 +605,7 @@
         .cta-inner {
             max-width: 880px;
             margin: 0 auto;
-            text-align: center;
+            text-align: left;
         }
 
         #cta .section-headline {
@@ -616,25 +616,37 @@
             letter-spacing: -0.03em;
             margin-bottom: 24px;
             color: white;
+            max-width: 880px;
         }
 
         #cta .cta-body {
             font-size: 19px;
             color: hsl(142 76% 92%);
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             max-width: 560px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .cta-form {
-            max-width: 480px;
-            margin: 0 auto;
+            max-width: 640px;
+            margin: 0;
             text-align: left;
         }
 
+        .cta-form-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            column-gap: 12px;
+            row-gap: 12px;
+            align-items: start;
+        }
+
+        .cta-form-grid input[type="email"] { grid-column: 1; grid-row: 1; }
+        .cta-form-grid .btn-submit { grid-column: 2; grid-row: 1; }
+        .cta-form-grid .consent-row { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
+
         .cta-form input[type="email"] {
             width: 100%;
+            min-width: 0;
             height: 52px;
             padding: 0 18px;
             border: 1px solid white;
@@ -690,23 +702,33 @@
         .consent-error.show { display: inline-block; }
 
         .cta-form .btn-submit {
-            display: block;
-            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             height: 52px;
-            margin-top: 16px;
+            padding: 0 24px;
             background: var(--bg-ink);
             color: var(--white);
             font-family: var(--font-body);
             font-weight: 500;
             font-size: 15px;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             border: none;
             border-radius: var(--radius);
             cursor: pointer;
             transition: background 180ms ease;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .cta-form .btn-submit:hover { background: black; }
+
+        .cta-helper {
+            font-family: var(--font-body);
+            font-size: 19px;
+            color: hsl(142 76% 92%);
+            margin-bottom: 16px;
+        }
 
         .cta-thanks {
             font-family: var(--font-body);
@@ -790,6 +812,11 @@
             #cta { padding: 80px 24px; }
             #cta .section-headline { font-size: 38px; }
             #cta .cta-body { font-size: 16px; }
+            .cta-form-grid { grid-template-columns: 1fr; }
+            .cta-form-grid input[type="email"],
+            .cta-form-grid .consent-row,
+            .cta-form-grid .btn-submit { grid-column: 1; grid-row: auto; }
+            .cta-form .btn-submit { width: 100%; }
         }
     </style>
 </head>
@@ -980,13 +1007,16 @@
                 <h2 class="section-headline">Stop guessing what your code does.</h2>
                 <p class="cta-body">Closed beta with a small group of regulated banks and insurers in DACH. If documentation gaps are on your risk register, write to us.</p>
                 <form class="cta-form" id="cta-form" novalidate>
-                    <input type="email" placeholder="Your work email address" required aria-label="Email address">
-                    <div class="consent-row">
-                        <input type="checkbox" id="consent" required>
-                        <label for="consent">I agree to be contacted by newinsights about early access. See our <a href="privacy.html">Privacy Policy</a>.</label>
+                    <p class="cta-helper">No marketing list. One reply from a founder.</p>
+                    <div class="cta-form-grid">
+                        <input type="email" placeholder="Your work email" required aria-label="Email address">
+                        <div class="consent-row">
+                            <input type="checkbox" id="consent" required>
+                            <label for="consent">I agree to be contacted by newinsights about early access. See our <a href="privacy.html" tabindex="-1">Privacy Policy</a>.</label>
+                        </div>
+                        <button type="submit" class="btn-submit">Request access →</button>
                     </div>
                     <p class="consent-error" id="consent-error">Please confirm you agree to be contacted.</p>
-                    <button type="submit" class="btn-submit">request access</button>
                 </form>
             </div>
         </section>
@@ -1038,7 +1068,7 @@
                 form.outerHTML = '<p class="cta-thanks">Thank you. We will contact you shortly.</p>';
             }).catch(function() {
                 btn.disabled = false;
-                btn.textContent = 'request access';
+                btn.textContent = 'Request access →';
                 alert('Something went wrong. Please try again.');
             });
         });
