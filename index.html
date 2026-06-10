@@ -1059,7 +1059,9 @@
     </footer>
 
     <script>
-        // Email capture with consent validation → POST to Google Sheets
+        // Email capture with consent validation → POST to Google Sheets.
+        // Expects the Apps Script web app to return JSON { result: "success" }.
+        // Deployment must be "Execute as: Me" + "Who has access: Anyone".
         var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbDvXxmwl9TYouF7cDx79Aco2m4mvzcqG4GBCW_hJdO1AsgbGY6DJvle_EmhE88JAuGg/exec';
 
         document.getElementById('cta-form').addEventListener('submit', function(e) {
@@ -1083,17 +1085,27 @@
             btn.disabled = true;
             btn.textContent = 'submitting...';
 
+            // NOTE: text/plain keeps this a "simple" CORS request so the browser
+            // does not send a preflight (which Apps Script cannot answer). We read
+            // the JSON response and only confirm success when the row was written —
+            // no more silently showing "Thank you" when the backend rejects the POST.
             fetch(SHEETS_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ email: emailInput.value })
-            }).then(function() {
+            }).then(function(res) {
+                if (!res.ok) { throw new Error('HTTP ' + res.status); }
+                return res.json();
+            }).then(function(data) {
+                if (!data || data.result !== 'success') {
+                    throw new Error((data && data.error) || 'Submission rejected');
+                }
                 form.outerHTML = '<p class="cta-thanks">Thank you. We will contact you shortly.</p>';
-            }).catch(function() {
+            }).catch(function(err) {
                 btn.disabled = false;
                 btn.textContent = 'Request access →';
-                alert('Something went wrong. Please try again.');
+                console.error('Signup submission failed:', err);
+                alert('Something went wrong and your email was not saved. Please try again, or email info@newinsights.ai.');
             });
         });
 
