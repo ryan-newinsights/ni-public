@@ -202,34 +202,6 @@
             position: relative;
         }
 
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 14px;
-            background: hsl(0 84% 60% / 0.12);
-            border: 1px solid hsl(0 84% 60% / 0.3);
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-            color: hsl(0 84% 75%);
-            margin-bottom: 32px;
-            letter-spacing: 0.02em;
-        }
-
-        .hero-tag-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: hsl(0 84% 60%);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
         .hero h1 {
             font-family: var(--font-headline);
             font-weight: 300;
@@ -891,14 +863,13 @@
         <!-- HERO -->
         <section class="hero" id="hero">
             <div class="hero-inner">
-                <div class="hero-tag">
-                    <span class="hero-tag-dot"></span>
-                    <span>Your AI agents are running on docs from 2019.</span>
-                </div>
                 <h1>The <span class="accent">codebase</span> is the only thing that's&nbsp;actually true.</h1>
                 <p class="hero-sub">Wikis lie. Diagrams drift. The retiring engineer hates writing documentation. newinsights.ai makes the source code itself the knowledge base — audit-grade documentation, business overviews and architecture diagrams generated and verified from code on every commit.</p>
                 <div class="hero-ctas">
-                    <a href="#cta" class="btn btn-accent btn-lg">Request access</a>
+                    <a href="/auth/login/social?connection=github" class="btn btn-accent btn-lg">
+                        <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+                        <span>Get started with GitHub</span>
+                    </a>
                 </div>
                 <div class="hero-meta">
                     <div><strong>Code-to-knowledge platform</strong>For regulated DACH financial services</div>
@@ -1027,7 +998,7 @@
         <section class="team fade-in" id="team">
             <div class="team-inner">
                 <div class="team-eyebrow">Who's behind this</div>
-                <h2>Built by the people who have lived this problem.</h2>
+                <h2>Built by someone who has lived this problem.</h2>
                 <div class="team-row">
                     <div>
                         <div class="founder">
@@ -1036,14 +1007,6 @@
                                 <div class="f-name">Ryan Grenier</div>
                                 <div class="f-role">Founder &amp; CEO</div>
                                 <p class="f-bio">Most recently a Managing Director in Commerzbank's Big Data Group in Frankfurt, Germany. Previously a GM at Amazon AWS, CMO of Rackspace (Nasdaq: RXT), Head of Product at two successfully exited startups and Yahoo!</p>
-                            </div>
-                        </div>
-                        <div class="founder">
-                            <div class="f-avatar"><img src="assets/shriram-ramamurthy.jpg" alt="Shriram Ramamurthy"></div>
-                            <div>
-                                <div class="f-name">Shriram (Ram) Ramamurthy</div>
-                                <div class="f-role">Founder &amp; CTO</div>
-                                <p class="f-bio">Lead platform and engineering development at Telescope Partners, a SF-based VC with $900M AUM. At Amazon and AWS Ram built massive scale systems for ultra-fast grocery delivery and gaming infrastructure.</p>
                             </div>
                         </div>
                     </div>
