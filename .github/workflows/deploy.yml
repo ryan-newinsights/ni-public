@@ -1,0 +1,123 @@
+name: Deploy to newinsights.ai
+
+# Why this exists.
+#
+# Deployment was a one-liner run by hand from a laptop, with nothing tying it
+# to a merge. That is not a hypothetical gap: when the "Log in with GitHub"
+# change was deployed, the VM turned out to be NINE commits behind — the Open
+# Graph metadata, the SVG logo, and a fix for the signup form silently dropping
+# submissions had all been merged and none had ever reached a visitor. The
+# signup-form fix in particular had been sitting dead on the live site.
+#
+# Merging is the moment someone decides a change should be public, so that is
+# the moment it should ship.
+
+on:
+  push:
+    branches: [main]
+    # Only the files the deploy actually copies. A README or workflow edit
+    # should not restart nginx.
+    paths:
+      - 'index.html'
+      - 'impressum.html'
+      - 'privacy.html'
+      - 'nginx.conf'
+  # Manual trigger, for re-deploying without an empty commit — e.g. after
+  # changing something on the VM itself.
+  workflow_dispatch:
+
+# Never let two deploys interleave: they would race on the same files and on
+# the nginx reload. Queue instead of cancelling, so a merge cannot be silently
+# skipped by a later one.
+concurrency:
+  group: deploy-newinsights
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write   # required to mint the Workload Identity Federation token
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Workload Identity Federation rather than a service-account JSON key:
+      # the token is short-lived and minted per run, so there is no long-lived
+      # credential sitting in repository secrets to leak or rotate.
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SA }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      # Follows the manual one-liner in README.md, with one deliberate
+      # difference: the nginx config is backed up before being replaced and
+      # restored if it fails validation.
+      #
+      # The original ordering copies nginx.conf into sites-available FIRST and
+      # runs nginx -t after. A bad config therefore leaves the site serving
+      # correctly — nginx keeps the last good config in memory — while the
+      # broken file sits on disk, armed. The next reload for ANY reason, a
+      # certbot renewal or a VM reboot, would then take the site down, far from
+      # the change that caused it. Restoring on failure keeps the failure at
+      # the moment it was introduced.
+      #
+      # && -chained throughout, so a failure at any step fails the job loudly
+      # rather than reporting a green deploy that did nothing.
+      - name: Deploy to VM
+        run: |
+          # No user@ prefix: under Workload Identity Federation the SSH
+          # identity is the service account's OS Login username
+          # (sa_<numeric-id>), not a human account. Hardcoding ryan@ would
+          # authenticate as a user whose keys this runner does not hold.
+          gcloud compute ssh instance-20250908-075435 \
+            --project=codeinsights-test-1 \
+            --zone=us-central1-c \
+            --tunnel-through-iap \
+            --quiet \
+            --command="\
+          set -euo pipefail && \
+          sudo -i -u hi bash -c 'cd /home/hi/ni-public && git fetch --all && git checkout main && git pull --ff-only' && \
+          sudo cp /etc/nginx/sites-available/newinsights /var/tmp/newinsights.nginx.bak && \
+          sudo cp /home/hi/ni-public/nginx.conf /etc/nginx/sites-available/newinsights && \
+          if ! sudo nginx -t; then \
+            echo 'nginx config invalid — restoring previous config, site untouched'; \
+            sudo cp /var/tmp/newinsights.nginx.bak /etc/nginx/sites-available/newinsights; \
+            exit 1; \
+          fi && \
+          sudo cp /home/hi/ni-public/index.html /var/www/newinsights/index.html && \
+          sudo cp /home/hi/ni-public/impressum.html /var/www/newinsights/impressum.html && \
+          sudo cp /home/hi/ni-public/privacy.html /var/www/newinsights/privacy.html && \
+          sudo systemctl reload nginx"
+
+      # A green deploy step only proves the commands exited 0. This proves a
+      # real visitor gets the new bytes, which is the thing that actually
+      # failed before.
+      - name: Verify the live site serves this commit
+        run: |
+          sha_short="${GITHUB_SHA::7}"
+          echo "Verifying https://newinsights.ai/ reflects ${sha_short}"
+          live=$(curl -sS --fail --max-time 20 "https://newinsights.ai/?ci=${GITHUB_SHA}")
+          expected=$(sha256sum index.html | cut -d' ' -f1)
+          actual=$(printf '%s' "$live" | sha256sum | cut -d' ' -f1)
+          if [ "$expected" != "$actual" ]; then
+            echo "::error::Live index.html does not match the committed one."
+            echo "  committed sha256: $expected"
+            echo "  live      sha256: $actual"
+            exit 1
+          fi
+          echo "Live site matches the committed index.html."
+
+      - name: Confirm HTML is not cacheable without revalidation
+        run: |
+          cc=$(curl -sSI --max-time 20 "https://newinsights.ai/" | tr -d '\r' \
+               | awk -F': ' 'tolower($1)=="cache-control"{print $2}')
+          echo "Cache-Control: ${cc:-<none>}"
+          case "$cc" in
+            *no-cache*|*no-store*|*max-age=0*) echo "HTML will revalidate." ;;
+            *) echo "::error::HTML is missing a revalidation directive; visitors can be served a stale page after a deploy." ; exit 1 ;;
+          esac

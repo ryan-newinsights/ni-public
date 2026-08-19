@@ -4,7 +4,65 @@ Static landing page for https://newinsights.ai/
 
 ## Deployment to Google VM
 
-### One-Liner Deploy
+Pushing to `main` deploys automatically via `.github/workflows/deploy.yml` —
+but only when `index.html`, `impressum.html`, `privacy.html` or `nginx.conf`
+changes, so a README edit does not reload nginx.
+
+The workflow does not just run the deploy; it then fetches the live site and
+compares its sha256 against the committed `index.html`, and asserts the HTML
+carries a revalidation directive. A deploy that exits 0 without the new bytes
+reaching a visitor fails the job.
+
+**Why this exists:** deployment used to be a manual one-liner with nothing
+tying it to a merge. In August 2026 the VM turned out to be nine commits
+behind — including a fix for the signup form silently dropping submissions,
+which had been merged and dead on the live site for weeks.
+
+### One-time setup (Workload Identity Federation)
+
+The workflow authenticates with WIF rather than a service-account JSON key, so
+there is no long-lived credential in repository secrets. Run once:
+
+```bash
+PROJECT=codeinsights-test-1
+NUM=$(gcloud projects describe $PROJECT --format='value(projectNumber)')
+SA=ni-public-deploy@$PROJECT.iam.gserviceaccount.com
+
+gcloud iam service-accounts create ni-public-deploy --project=$PROJECT \
+  --display-name="ni-public GitHub Actions deploy"
+
+# osAdminLogin (not osLogin) — the deploy runs sudo on the VM.
+gcloud projects add-iam-policy-binding $PROJECT \
+  --member="serviceAccount:$SA" --role="roles/compute.osAdminLogin"
+gcloud projects add-iam-policy-binding $PROJECT \
+  --member="serviceAccount:$SA" --role="roles/iap.tunnelResourceAccessor"
+
+gcloud iam workload-identity-pools create github \
+  --project=$PROJECT --location=global --display-name="GitHub Actions"
+
+# The attribute-condition is the security boundary: without it ANY GitHub
+# repository could mint tokens for this service account.
+gcloud iam workload-identity-pools providers create-oidc github \
+  --project=$PROJECT --location=global --workload-identity-pool=github \
+  --issuer-uri="https://token.actions.githubusercontent.com" \
+  --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
+  --attribute-condition="assertion.repository=='ryan-newinsights/ni-public'"
+
+gcloud iam service-accounts add-iam-policy-binding $SA --project=$PROJECT \
+  --role=roles/iam.workloadIdentityUser \
+  --member="principalSet://iam.googleapis.com/projects/$NUM/locations/global/workloadIdentityPools/github/attribute.repository/ryan-newinsights/ni-public"
+
+echo "GCP_WIF_PROVIDER = projects/$NUM/locations/global/workloadIdentityPools/github/providers/github"
+echo "GCP_DEPLOY_SA    = $SA"
+```
+
+Then add those two values as repository secrets under
+**Settings → Secrets and variables → Actions**.
+
+Until both secrets exist the workflow fails at the auth step; the manual
+one-liner below keeps working regardless.
+
+### Manual deploy (fallback)
 
 Deploy with a single command from your local machine:
 
